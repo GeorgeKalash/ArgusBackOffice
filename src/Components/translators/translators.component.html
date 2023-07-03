@@ -1,0 +1,37 @@
+<br />
+<br />
+<br />
+<br />
+<div class="form-fields-container">
+  
+  <mat-form-field appearance="fill">
+    <mat-label>Data Sets</mat-label>
+    <mat-select [(ngModel)]="dataset">
+      <mat-option *ngFor="let sets of dataSets" [value]="sets.datasetId">
+        {{ sets.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>From Language</mat-label>
+    <mat-select [(ngModel)]="fromLanguageId" [disabled]="true">
+      <mat-option
+        *ngFor="let language of languages"
+        [value]="language.languageId"
+      >
+        {{ language.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>To Language</mat-label>
+    <mat-select [(ngModel)]="toLanguageId">
+      <mat-option
+        *ngFor="let language of languages"
+        [value]="language.languageId"
+      >
+        {{ language.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
