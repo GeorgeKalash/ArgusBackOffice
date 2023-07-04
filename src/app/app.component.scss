@@ -1,23 +1,32 @@
-
 .toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    background-color: #FFF;
-    color: white;
-    font-weight: 600;
-    box-shadow: 0px 0px 10px rgba(0,0,0,.2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+  button {
+    border: 0px;
+    font-family: "Roboto";
+    font-size: 14px;
+    background-color: transparent;
+    color: hsl(0, 100%, 38%);
   }
 
-  .toolbar img {
-    margin: 0 16px;
-  }
+}
 
-  .example-spacer {
+.toolbar img {
+  margin: 0 16px;
+}
+
+.example-spacer {
   flex: 1 1 auto;
 }
+

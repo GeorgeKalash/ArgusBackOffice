@@ -3,3 +3,29 @@
     grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
     grid-gap: 10px; /* Adjust the gap between form fields */
   }
+
+  .full-width-table {
+    box-shadow: none;
+    width: 95%;
+    border-collapse: collapse;
+    border: 0.5px solid #C7C7C7;
+  }
+  th {
+    /* row border */
+    border-right: 0.5px solid #C7C7C7;
+  }
+  
+  td {
+    /* row padding */
+    border-right: 0.5px solid #C7C7C7
+  }
+  tr {
+    /* row border */
+    border-bottom: 0.5px solid #C7C7C7
+  }
+.centered-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

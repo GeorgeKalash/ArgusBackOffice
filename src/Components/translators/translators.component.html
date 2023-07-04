@@ -2,36 +2,71 @@
 <br />
 <br />
 <br />
+<form [formGroup]="form">
 <div class="form-fields-container">
-  
-  <mat-form-field appearance="fill">
-    <mat-label>Data Sets</mat-label>
-    <mat-select [(ngModel)]="dataset">
-      <mat-option *ngFor="let sets of dataSets" [value]="sets.datasetId">
-        {{ sets.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>From Language</mat-label>
-    <mat-select [(ngModel)]="fromLanguageId" [disabled]="true">
-      <mat-option
-        *ngFor="let language of languages"
-        [value]="language.languageId"
+    <mat-form-field appearance="fill">
+      <mat-label>Data Sets</mat-label>
+      <mat-select
+        formControlName="dataset"
+        (selectionChange)="onSelectionChange($event)"
       >
-        {{ language.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>To Language</mat-label>
-    <mat-select [(ngModel)]="toLanguageId">
-      <mat-option
-        *ngFor="let language of languages"
-        [value]="language.languageId"
+        <mat-option *ngFor="let sets of dataSets" [value]="sets.datasetId">
+          {{ sets.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>From Language</mat-label>
+      <mat-select formControlName="disabledFromLanguageId" class="mat-select-readonly">
+        <mat-option
+          *ngFor="let language of languages"
+          [value]="language.languageId"
+        >
+          {{ language.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <input type="hidden" formControlName="fromLanguageId" [value]="form.get('disabledFromLanguageId')?.value">
+    <mat-form-field>
+      <mat-label>To Language</mat-label>
+      <mat-select
+        formControlName="toLanguageId"
+        (selectionChange)="onSelectionChange($event)"
       >
-        {{ language.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
+        <mat-option
+          *ngFor="let language of languages"
+          [value]="language.languageId"
+        >
+          {{ language.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+
+<mat-table class="full-width-table" [dataSource]="joinedArray">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Key Column -->
+  <ng-container matColumnDef="key">
+    <th mat-header-cell *matHeaderCellDef fxFlex="20%" class="centered-title"> key </th>
+    <td mat-cell *matCellDef="let element" fxFlex="20%"> {{element.key}} </td>
+  </ng-container>
+
+  <!-- Value1 Column -->
+  <ng-container matColumnDef="value1">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title"> value1 </th>
+    <td mat-cell *matCellDef="let element" fxFlex="40%"> {{element.value1}} </td>
+  </ng-container>
+
+  <!-- Value2 Column -->
+  <ng-container matColumnDef="value2">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title"> value2 </th>
+    <td mat-cell *matCellDef="let element" fxFlex="40%"> {{element.value2}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="3"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</mat-table>

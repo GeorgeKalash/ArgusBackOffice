@@ -3,20 +3,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class KVS_Service {
-    public URL ="https://deploy.arguserp.net/";
+  public URL = 'https://deploy.arguserp.net/';
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getRequest(body: any): Promise<any> {
-    console.log(body);
-    const url = this.URL + body.service + body.extension + '?' + body.parameters;
+    const url =
+      this.URL + body.service + body.extension + '?' + body.parameters;
     const headers = this.getHeadersWithJwt(); // Get headers with JWT
-    console.log(url);
-    console.log(headers);
-    return this.http.get(url, { headers }).toPromise();
+    var result = this.http.get(url, { headers }).toPromise();
+    return result;
   }
 
   postRequest(body: any) {
@@ -32,7 +31,7 @@ export class KVS_Service {
     const jwt = this.getJwtFromCookies(); // Retrieve JWT from cookies
     const headers = new HttpHeaders({
       'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${jwt}` // Add JWT to Authorization header
+      Authorization: `Bearer ${jwt}`, // Add JWT to Authorization header
     });
 
     return headers;
