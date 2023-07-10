@@ -2,6 +2,8 @@ import { RouterModule } from '@angular/router';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatInputModule} from '@angular/material/input';
@@ -12,7 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,19 +24,24 @@ import { AppComponent } from './app.component';
 import { DataSetsComponent } from '../Components/data-sets/data-sets.component';
 import { TranslatorsComponent } from '../Components/translators/translators.component';
 import { SignInComponent } from '../Components/sign-in/sign-in.component';
+import { LoaderComponent } from '../Components/loader/loader.component';
+
 
 import { appRoutes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { LoaderService } from 'src/Services/LoaderService';
 
 @NgModule({
   declarations: [
     AppComponent,
     TranslatorsComponent,
-    SignInComponent
+    SignInComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
+    NgxSpinnerModule,
     HttpClientModule,
     AppRoutingModule,
     MatTableModule,
@@ -48,10 +55,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatAutocompleteModule,
     MatPaginatorModule,
     FlexLayoutModule,
+    MatDialogModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [LoaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

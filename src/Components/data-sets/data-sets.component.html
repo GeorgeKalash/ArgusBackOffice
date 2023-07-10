@@ -20,11 +20,30 @@
 
   <!-- name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef fxFlex="70%" class="centered-title"> name </th>
-    <td mat-cell *matCellDef="let element" fxFlex="70%" class="custom-cell"> {{element.name}} </td>
+    <th mat-header-cell *matHeaderCellDef fxFlex="60%" class="centered-title"> name </th>
+    <td mat-cell *matCellDef="let element" fxFlex="60%" class="custom-cell"> {{element.name}} </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="2" class="custom-row"></tr>
+  <!-- actions -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef fxFlex="10%">
+      <button mat-icon-button color="primary" (click)="openAddDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let row; let i=index;" fxFlex="10%">
+      <button mat-icon-button color="primary" (click)="startEdit(row)">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button color="primary" (click)="deleteItem(row)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="3" class="custom-row"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </mat-table>
 

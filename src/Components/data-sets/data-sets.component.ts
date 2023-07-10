@@ -2,29 +2,37 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { KVS_Service } from 'src/KVS_service';
 import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService';
 import { Datasets } from 'src/models/Datasets';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatDialog } from '@angular/material/dialog';
+import { DataSetsFormComponent } from '../data-sets-form/data-sets-form.component';
 
 @Component({
   selector: 'app-data-sets',
   templateUrl: './data-sets.component.html',
-  styleUrls: ['./data-sets.component.scss'],  
+  styleUrls: ['./data-sets.component.scss'],
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, FlexLayoutModule],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FlexLayoutModule,
+    MatIconModule,
+  ],
 })
 export class DataSetsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['datasetId', 'name'];
+  displayedColumns: string[] = ['datasetId', 'name', 'actions'];
   dataSets: Datasets[] = [];
-  dataSource : any;
+  dataSource: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private API_Service: KVS_Service){
-
-  }
+  constructor(private API_Service: KVS_Service, public dialogService: MatDialog) {}
   ngAfterViewInit() {
     this.fetchDataSets();
 
@@ -47,5 +55,19 @@ export class DataSetsComponent implements AfterViewInit {
         console.error('Error fetching datasets:', error);
       });
   }
+  openAddDialog() {
+    const dialogRef = this.dialogService.open(DataSetsFormComponent, {
+      data: {dataSet: {} }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        // After dialog is closed we're refreshing the grid
+        // For add we're just pushing a new row inside DataService
+        this.fetchDataSets();
+      }
+    });
+  }
+  startEdit(row: Datasets) {}
+  deleteItem(row: Datasets) {}
 }
