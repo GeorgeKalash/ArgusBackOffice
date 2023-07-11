@@ -10,6 +10,7 @@ import { Datasets } from 'src/models/Datasets';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDialog } from '@angular/material/dialog';
 import { DataSetsFormComponent } from '../data-sets-form/data-sets-form.component';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-data-sets',
@@ -52,7 +53,12 @@ export class DataSetsComponent implements AfterViewInit {
         this.dataSource.paginator = this.paginator;
       })
       .catch((error) => {
-        console.error('Error fetching datasets:', error);
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error 
+          }
+        });
       });
   }
   openAddDialog() {

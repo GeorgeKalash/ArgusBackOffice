@@ -73,7 +73,7 @@ export class KVS_Service {
   }
 
   private getJwtFromCookies(): string {
-    const jwt = this.cookieService.get('key');
+    const jwt = this.cookieService.get('keyAcc');
     return jwt;
   }
 }
