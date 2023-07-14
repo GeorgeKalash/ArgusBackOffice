@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { KVS_Service } from 'src/KVS_service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,7 +22,8 @@ export class SignInComponent {
     private kvs_service: KVS_Service,
     private formBuilder: FormBuilder,
     private cookieService: CookieService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public router : Router
   ) {
     this.form = this.formBuilder.group({
       username: ['', [Validators.required, Validators.email]],
@@ -45,26 +47,28 @@ export class SignInComponent {
       parameters: parametersTranslator,
     };
 
-    const parametersSignIn3 = `_email=${
-      formValue.username
-    }&_password=${this.encryptPWD(
-      formValue.password
-    )}&_accountId=100&_userId=59`;
-    var requestSignIn3 = {
-      service: IdentityServerService.service,
-      extension: IdentityServerService.signIn3,
-      parameters: parametersSignIn3,
-    };
+    
 
     //getTranslator
     this.kvs_service
-      .getRequest(getTranslator)
+      .getTranslator(getTranslator)
       .then((data) => {
-        console.log(data);
         if (data.record != null) {
+          const parametersSignIn3 = `_email=${
+            formValue.username
+          }&_password=${this.encryptPWD(
+            formValue.password
+          )}&_accountId=100&_userId=`+data.record.recordId;
+          var requestSignIn3 = {
+            service: IdentityServerService.service,
+            extension: IdentityServerService.signIn3,
+            parameters: parametersSignIn3,
+          };
+
           //signin3
           this.API_Service.signin3(requestSignIn3)
             .then((data) => {
+              //save JWT token to cookies
               this.cookieService.set(
                 'keyAcc',
                 '' + data.record.accessToken,
@@ -72,7 +76,10 @@ export class SignInComponent {
                 '/',
                 ''
               );
-              //save access token and refresh token to cookies
+              //save userType to cookies 
+              
+              //redirect to / 
+              this.router.navigate(['/']);
             })
             .catch((error) => {
               this.dialog.open(AlertDialogComponent, {
@@ -82,13 +89,11 @@ export class SignInComponent {
                 },
               });
             });
-        }
-        else
-        {
+        } else {
           this.dialog.open(AlertDialogComponent, {
             data: {
               title: 'no access',
-              message: 'This username doesn\'t have access to translate',
+              message: "This username doesn't have access to translate",
             },
           });
         }

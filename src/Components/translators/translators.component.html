@@ -34,7 +34,7 @@
         (selectionChange)="onSelectionChange($event)"
       >
         <mat-option
-          *ngFor="let language of languages"
+          *ngFor="let language of toLanguages"
           [value]="language.languageId"
         >
           {{ language.name }}
@@ -44,7 +44,7 @@
   </div>
 </form>
 
-<mat-table class="full-width-table" [dataSource]="joinedArray">
+<mat-table class="full-width-table" [dataSource]="dataSource">
 
   <!-- Key Column -->
   <ng-container matColumnDef="key">
@@ -57,13 +57,23 @@
     <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title"> value1 </th>
     <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell"> {{element.value1}} </td>
   </ng-container>
-
   <!-- Value2 Column -->
   <ng-container matColumnDef="value2">
-    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title"> value2 </th>
-    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell"> {{element.value2}} </td>
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">value2</th>
+    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
+      <textarea matInput type="text" [(ngModel)]="element.editedValue2" #val (blur)="saveRow(element)" class="input-in-cell"> </textarea>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="3" class="custom-row"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </mat-table>
+
+<mat-paginator
+  #paginator
+  [length]="joinedArray.length"
+  [pageIndex]="0"
+  [pageSize]="50"
+  showFirstLastButtons
+>
+</mat-paginator>

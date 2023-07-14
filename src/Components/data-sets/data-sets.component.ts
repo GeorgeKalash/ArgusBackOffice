@@ -48,9 +48,11 @@ export class DataSetsComponent implements AfterViewInit {
     };
     this.API_Service.getRequest(request)
       .then((data) => {
-        this.dataSets = data.list;
-        this.dataSource = new MatTableDataSource<Datasets>(this.dataSets);
-        this.dataSource.paginator = this.paginator;
+        if(data != null){
+          this.dataSets = data.list;
+          this.dataSource = new MatTableDataSource<Datasets>(this.dataSets);
+          this.dataSource.paginator = this.paginator;
+        }
       })
       .catch((error) => {
         this.dialogService.open(AlertDialogComponent, {
@@ -74,6 +76,18 @@ export class DataSetsComponent implements AfterViewInit {
       }
     });
   }
-  startEdit(row: Datasets) {}
+  startEdit(row: Datasets) {
+    console.log(row);
+    const dialogRef = this.dialogService.open(DataSetsFormComponent, {
+      data: {dataSet: row }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        // After dialog is closed we're refreshing the grid
+        // For add we're just pushing a new row inside DataService
+        this.fetchDataSets();
+      }
+    });
+  }
   deleteItem(row: Datasets) {}
 }
