@@ -10,6 +10,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { NotificationService } from 'src/Services/notification.service';
 
 @Component({
   selector: 'app-translators',
@@ -38,7 +39,8 @@ export class TranslatorsComponent implements OnInit {
   constructor(
     private API_Service: KVS_Service,
     private formBuilder: FormBuilder,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    public notifyService:NotificationService
   ) {
     this.form = this.formBuilder.group({
       dataset: '',
@@ -209,6 +211,8 @@ export class TranslatorsComponent implements OnInit {
         .then((data) => {
           if (data != null) {
             console.log(data);
+            this.notifyService.showSuccess("Record Saved Successfully", "Success")
+
           }
           //return old value in the field
           row.editedValue2 = oldEditedValue2;

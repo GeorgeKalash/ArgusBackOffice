@@ -32,6 +32,7 @@ import { AlertDialogComponent } from '../Components/alert-dialog/alert-dialog.co
 import { appRoutes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { ToastrModule } from 'ngx-toastr';
 import { LoaderService } from 'src/Services/LoaderService';
 
 @NgModule({
@@ -64,7 +65,8 @@ import { LoaderService } from 'src/Services/LoaderService';
     FlexLayoutModule,
     MatDialogModule,
     RouterModule.forRoot(appRoutes),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [LoaderService],
   bootstrap: [AppComponent]
