@@ -4,17 +4,17 @@
 <br />
 <form [formGroup]="form">
 <div class="form-fields-container">
-    <mat-form-field appearance="fill">
+
+    <mat-form-field>
       <mat-label>Data Sets</mat-label>
-      <mat-select
-        formControlName="dataset"
-        (selectionChange)="onSelectionChange($event)"
-      >
-        <mat-option *ngFor="let sets of dataSets" [value]="sets.datasetId">
+      <input type="text" matInput [formControl]="dataset" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChangeDataSet($event)">
+        <mat-option *ngFor="let sets of filteredDataSets" [value]="sets.datasetId">
           {{ sets.name }}
         </mat-option>
-      </mat-select>
+      </mat-autocomplete>
     </mat-form-field>
+
     <mat-form-field>
       <mat-label>From Language</mat-label>
       <mat-select formControlName="disabledFromLanguageId" class="mat-select-readonly">

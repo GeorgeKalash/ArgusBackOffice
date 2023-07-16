@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from 'src/Services/notification.service';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-translators',
@@ -25,7 +26,7 @@ export class TranslatorsComponent implements OnInit {
   dataSource: any;
   fromLanguageId: any;
   toLanguageId: any;
-  dataset: any;
+  //dataset: any;
   isDropdownOpen: any;
   isEditable: any;
   form: FormGroup;
@@ -33,6 +34,8 @@ export class TranslatorsComponent implements OnInit {
   KVS1: KeyValues[] = [];
   KVS2: KeyValues[] = [];
   displayedColumns: string[] = ['key', 'value1', 'value2'];
+  filteredDataSets: any[] = []; // filtered datasets based on search
+  dataset = new FormControl();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -40,10 +43,10 @@ export class TranslatorsComponent implements OnInit {
     private API_Service: KVS_Service,
     private formBuilder: FormBuilder,
     public dialogService: MatDialog,
-    public notifyService:NotificationService
+    public notifyService: NotificationService
   ) {
     this.form = this.formBuilder.group({
-      dataset: '',
+      dataset: new FormControl(),
       disabledFromLanguageId: new FormControl({ value: 1, disabled: true }),
       fromLanguageId: new FormControl({ value: 1, disabled: false }),
       toLanguageId: '',
@@ -53,6 +56,19 @@ export class TranslatorsComponent implements OnInit {
   ngOnInit() {
     this.fetchLanguages();
     this.fetchDataSets();
+    this.filteredDataSets = this.dataSets;
+    this.dataset.valueChanges
+      .pipe(startWith('')) // start with an empty string
+      .subscribe((value) => {
+        this.filteredDataSets = this.filterDataSets(value);
+      });
+  }
+  filterDataSets(value: string): any[] {
+    // filter the datasets based on the search value
+    const filterValue = value.toString().toLowerCase();
+    return this.dataSets.filter((sets) =>
+      sets.name.toString().toLowerCase().includes(filterValue)
+    );
   }
 
   fetchLanguages() {
@@ -66,7 +82,9 @@ export class TranslatorsComponent implements OnInit {
         if (data != null) {
           console.log(data.list);
           this.languages = data.list;
-          this.toLanguages = data.list.filter( (item:Languages) => item.languageId != 1);
+          this.toLanguages = data.list.filter(
+            (item: Languages) => item.languageId != 1
+          );
           //this.fromLanguageId = this.languages[0].languageId;
         }
       })
@@ -128,8 +146,21 @@ export class TranslatorsComponent implements OnInit {
       });
   }
 
+  onSelectionChangeDataSet(event: any) {
+    const selectedDataSetId = event.option.value;
+    this.form.controls['dataset'].setValue(selectedDataSetId);
+
+    const selectedDataSet = this.dataSets.find(
+      (sets) => sets.datasetId === selectedDataSetId
+    );
+    if (selectedDataSet) {
+      this.dataset.setValue(selectedDataSet.name);
+    }
+    this.onSelectionChange(event);
+  }
   onSelectionChange(event: any) {
     const formValues = this.form.value;
+    console.log(formValues);
 
     if (
       formValues.dataset != '' &&
@@ -193,7 +224,6 @@ export class TranslatorsComponent implements OnInit {
 
   saveRow(row: any) {
     console.log(row);
-    
     if (row.value2 !== row.editedValue2) {
       const oldEditedValue2 = row.editedValue2;
       var kvs = new KeyValues(
@@ -202,7 +232,6 @@ export class TranslatorsComponent implements OnInit {
         row.key,
         row.editedValue2
       );
-      console.log(kvs);
       var request = {
         service: KeyValueStoreWebService.service,
         extension: KeyValueStoreWebService.setKVS,
@@ -210,12 +239,18 @@ export class TranslatorsComponent implements OnInit {
       this.API_Service.postRequest(request, kvs)
         .then((data) => {
           if (data != null) {
-            console.log(data);
-            this.notifyService.showSuccess("Record Saved Successfully", "Success")
 
+            this.notifyService.showSuccess(
+              'Record Saved Successfully',
+              'Success'
+            );
+            row.value2 = row.editedValue2;
           }
-          //return old value in the field
-          row.editedValue2 = oldEditedValue2;
+          else{
+
+            //return old value in the field
+            row.editedValue2 = oldEditedValue2;
+          }
         })
         .catch((error) => {
           this.dialogService.open(AlertDialogComponent, {
