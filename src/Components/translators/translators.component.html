@@ -3,21 +3,38 @@
 <br />
 <br />
 <form [formGroup]="form">
-<div class="form-fields-container">
-
+  <div class="form-fields-container">
     <mat-form-field>
       <mat-label>Data Sets</mat-label>
-      <input type="text" matInput [formControl]="dataset" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChangeDataSet($event)">
-        <mat-option *ngFor="let sets of filteredDataSets" [value]="sets.datasetId">
+      <input
+        type="text"
+        matInput
+        [formControl]="dataset"
+        [matAutocomplete]="auto"
+        required
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onSelectionChangeDataSet($event)"
+      >
+        <mat-option
+          *ngFor="let sets of filteredDataSets"
+          [value]="sets.datasetId"
+        >
           {{ sets.name }}
         </mat-option>
       </mat-autocomplete>
+      <mat-error *ngIf="form?.get('dataset')?.errors?.['required']"
+        >Data Sets is required</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>From Language</mat-label>
-      <mat-select formControlName="disabledFromLanguageId" class="mat-select-readonly">
+      <mat-select
+        formControlName="disabledFromLanguageId"
+        class="mat-select-readonly"
+      >
         <mat-option
           *ngFor="let language of languages"
           [value]="language.languageId"
@@ -26,7 +43,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <input type="hidden" formControlName="fromLanguageId" [value]="form.get('disabledFromLanguageId')?.value">
+    <input
+      type="hidden"
+      formControlName="fromLanguageId"
+      [value]="form.get('disabledFromLanguageId')?.value"
+    />
     <mat-form-field>
       <mat-label>To Language</mat-label>
       <mat-select
@@ -42,31 +63,63 @@
       </mat-select>
     </mat-form-field>
   </div>
+  <div class="form-fields-container">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Search"
+        formControlName="filterValue"
+        (ngModelChange)="applyFilter()"
+      />
+    </mat-form-field>
+  </div>
 </form>
 
 <mat-table class="full-width-table" [dataSource]="dataSource">
-
   <!-- Key Column -->
   <ng-container matColumnDef="key">
-    <th mat-header-cell *matHeaderCellDef fxFlex="20%" class="centered-title"> key </th>
-    <td mat-cell *matCellDef="let element" fxFlex="20%" class="custom-cell"> {{element.key}} </td>
+    <th mat-header-cell *matHeaderCellDef fxFlex="20%" class="centered-title">
+      key
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="20%" class="custom-cell">
+      {{ element.key }}
+    </td>
   </ng-container>
 
   <!-- Value1 Column -->
   <ng-container matColumnDef="value1">
-    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title"> value1 </th>
-    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell"> {{element.value1}} </td>
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">
+      value1
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
+      {{ element.value1 }}
+    </td>
   </ng-container>
   <!-- Value2 Column -->
   <ng-container matColumnDef="value2">
-    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">value2</th>
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">
+      value2
+    </th>
     <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
-      <textarea matInput type="text" [(ngModel)]="element.editedValue2" #val (blur)="saveRow(element)" class="input-in-cell"> </textarea>
+      <textarea
+        matInput
+        type="text"
+        [(ngModel)]="element.editedValue2"
+        #val
+        (blur)="saveRow(element)"
+        class="input-in-cell"
+      >
+      </textarea>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="3" class="custom-row"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr
+    mat-header-row
+    *matHeaderRowDef="displayedColumns"
+    colspan="3"
+    class="custom-row"
+  ></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </mat-table>
 
 <mat-paginator

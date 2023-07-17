@@ -3,7 +3,7 @@ import { KVS_Service } from '../../KVS_service';
 import { Languages } from 'src/models/Languages';
 import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService';
 import { Datasets } from 'src/models/Datasets';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { KeyValues } from 'src/models/KeyValues';
 import { KeyValuesTable } from 'src/models/KeyValuesTable';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
@@ -30,6 +30,7 @@ export class TranslatorsComponent implements OnInit {
   isDropdownOpen: any;
   isEditable: any;
   form: FormGroup;
+  filterValue = '';
 
   KVS1: KeyValues[] = [];
   KVS2: KeyValues[] = [];
@@ -46,10 +47,11 @@ export class TranslatorsComponent implements OnInit {
     public notifyService: NotificationService
   ) {
     this.form = this.formBuilder.group({
-      dataset: new FormControl(),
+      dataset: ['', Validators.required],
       disabledFromLanguageId: new FormControl({ value: 1, disabled: true }),
       fromLanguageId: new FormControl({ value: 1, disabled: false }),
       toLanguageId: '',
+      filterValue: new FormControl(),
     });
   }
 
@@ -63,6 +65,19 @@ export class TranslatorsComponent implements OnInit {
         this.filteredDataSets = this.filterDataSets(value);
       });
   }
+
+  applyFilter() {
+    const filterControl = this.form.get('filterValue');
+    if (filterControl && filterControl.value) {
+      const filterValue = filterControl.value;
+      // Apply the filter logic using the filterValue
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    else{
+      this.dataSource = new MatTableDataSource<Datasets>(this.joinedArray);
+    }
+  }
+
   filterDataSets(value: string): any[] {
     // filter the datasets based on the search value
     const filterValue = value.toString().toLowerCase();
@@ -239,15 +254,12 @@ export class TranslatorsComponent implements OnInit {
       this.API_Service.postRequest(request, kvs)
         .then((data) => {
           if (data != null) {
-
             this.notifyService.showSuccess(
               'Record Saved Successfully',
               'Success'
             );
             row.value2 = row.editedValue2;
-          }
-          else{
-
+          } else {
             //return old value in the field
             row.editedValue2 = oldEditedValue2;
           }
