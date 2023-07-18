@@ -16,9 +16,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { NotificationService } from 'src/Services/notification.service';
 
 @Component({
   selector: 'app-data-sets-form',
@@ -30,7 +33,9 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatDialogModule,
+    MatCardModule,
     MatInputModule,
+    MatButtonModule,
     CommonModule,
   ],
 })
@@ -41,7 +46,8 @@ export class DataSetsFormComponent {
     public dialogRef: MatDialogRef<DataSetsFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Datasets,
     public dataService: KVS_Service,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    public notifyService: NotificationService
   ) {
     this.form = this.formBuilder.group({
       datasetId: ['', Validators.required],
@@ -77,7 +83,12 @@ export class DataSetsFormComponent {
     };
     this.API_Service.postRequest(request, formValue)
       .then((data) => {
+        this.dialogRef.close(1);
         console.log(data);
+        this.notifyService.showSuccess(
+          'Record Saved Successfully',
+          'Success'
+        );
       })
       .catch((error) => {
         this.dialogService.open(AlertDialogComponent, {

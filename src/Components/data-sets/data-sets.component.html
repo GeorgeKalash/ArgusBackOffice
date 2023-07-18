@@ -1,7 +1,3 @@
-<br />
-<br />
-<br />
-<br />
 <!-- <div class="container no-shadow"> -->
 
 <!-- <div class="form">
@@ -27,13 +23,13 @@
   <!-- actions -->
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef fxFlex="10%">
-      <button mat-icon-button color="primary" (click)="openAddDialog()">
+      <button mat-icon-button  (click)="openAddDialog()">
         <mat-icon>add</mat-icon>
       </button>
     </mat-header-cell>
 
     <mat-cell *matCellDef="let row; let i=index;" fxFlex="10%">
-      <button mat-icon-button color="primary" (click)="startEdit(row)">
+      <button mat-icon-button  (click)="startEdit(row)">
         <mat-icon>edit</mat-icon>
       </button>
 <!-- 

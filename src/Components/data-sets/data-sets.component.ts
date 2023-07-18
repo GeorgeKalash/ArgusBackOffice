@@ -3,6 +3,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { KVS_Service } from 'src/KVS_service';
 import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService';
@@ -24,6 +25,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
     MatInputModule,
     FlexLayoutModule,
     MatIconModule,
+    MatButtonModule
   ],
 })
 export class DataSetsComponent implements AfterViewInit {
@@ -40,6 +42,7 @@ export class DataSetsComponent implements AfterViewInit {
     //this.dataSource.paginator = this.paginator;
   }
   fetchDataSets() {
+    console.log("fetch datasets");
     var parameters = '_dataSet=0';
     var request = {
       service: KeyValueStoreWebService.service,
@@ -69,25 +72,17 @@ export class DataSetsComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
+      console.log(result);
+      if (result != undefined && result === 1) {
         // After dialog is closed we're refreshing the grid
         // For add we're just pushing a new row inside DataService
+        console.log("refresh grid");
         this.fetchDataSets();
       }
     });
   }
   startEdit(row: Datasets) {
-    console.log(row);
-    const dialogRef = this.dialogService.open(DataSetsFormComponent, {
-      data: {dataSet: row }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        // After dialog is closed we're refreshing the grid
-        // For add we're just pushing a new row inside DataService
-        this.fetchDataSets();
-      }
-    });
+    
   }
   deleteItem(row: Datasets) {}
 }

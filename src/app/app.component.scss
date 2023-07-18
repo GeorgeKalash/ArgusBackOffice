@@ -1,5 +1,4 @@
 .toolbar {
-  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -12,6 +11,16 @@
   font-weight: 600;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
+  .toolbar.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    transition: top 0.3s;
+  }
+  
+  .toolbar.sticky.hidden {
+    top: -100px; /* Move the toolbar off-screen */
+  }
   button {
     border: 0px;
     font-family: "Roboto";

@@ -1,54 +1,60 @@
-<div class="container">
-  <h3 mat-dialog-title>DataSet</h3>
-  <form [formGroup]="form" (ngSubmit)="(submit)">
-    <!-- <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm"> -->
-    <div class="form">
-      <mat-form-field color="primary">
-        <input
-          matInput
-          #input
-          class="form-control"
-          placeholder="datasetId"
-          formControlName="datasetId"
-          name="datasetId"
-          required
-        />
-        <mat-error *ngIf="form.controls['datasetId'].hasError('required')">{{getErrorMessage()}}</mat-error>
+<div class="form-card">
+  <mat-card-title style="height: 50px; font-size: 20px; font-style: bold;">DataSet</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="(submit)">
+      <div class="form">
+        <mat-form-field color="primary">
+          <input
+            matInput
+            #input
+            class="form-control"
+            placeholder="datasetId"
+            formControlName="datasetId"
+            name="datasetId"
+            required
+            autocomplete="off"
+          />
+          <mat-error *ngIf="form.controls['datasetId'].hasError('required')">{{
+            getErrorMessage()
+          }}</mat-error>
 
-        <!-- <mat-error *ngIf="formControl.invalid">{{
+          <!-- <mat-error *ngIf="formControl.invalid">{{
           getErrorMessage()
         }}</mat-error> -->
-      </mat-form-field>
-    </div>
-    <div class="form">
-      <mat-form-field color="primary">
-        <input
-          matInput
-          #input
-          class="form-control"
-          placeholder="name"
-          formControlName="name"
-          name="name"
-          required
-        />
-        <mat-error *ngIf="form.controls['name'].hasError('required')">{{getErrorMessage()}}</mat-error>
-        <!-- <mat-error *ngIf="formControl.invalid">{{
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <mat-form-field color="primary">
+          <input
+            matInput
+            #input
+            class="form-control"
+            placeholder="name"
+            formControlName="name"
+            name="name"
+            required
+            autocomplete="off"
+          />
+          <mat-error *ngIf="form.controls['name'].hasError('required')">{{
+            getErrorMessage()
+          }}</mat-error>
+          <!-- <mat-error *ngIf="formControl.invalid">{{
           getErrorMessage()
         }}</mat-error> -->
-      </mat-form-field>
-    </div>
+        </mat-form-field>
+      </div>
 
-    <div mat-dialog-actions>
-      <button
-        mat-button
-        type="submit"
-        [disabled]="form.invalid"
-        [mat-dialog-close]="1"
-        (click)="confirmAdd()"
-      >
-        Save
-      </button>
-      <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
-    </div>
-  </form>
+      <div mat-dialog-actions>
+        <button
+          mat-button
+          type="submit"
+          [disabled]="form.invalid"
+          (click)="confirmAdd()"
+        >
+          Save
+        </button>
+        <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
 </div>

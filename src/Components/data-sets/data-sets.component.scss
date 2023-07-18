@@ -1,12 +1,19 @@
 .no-shadow{
   box-shadow: none;
 }
+
 .full-width-table {
   box-shadow: none;
   width: 90%;
   border-collapse: collapse;
   border: 0.5px solid #C7C7C7;
+  top: 15px;
 }
+
+table {
+  width: 100%;
+}
+
 th {
   /* row border */
   border-right: 0.5px solid #C7C7C7;

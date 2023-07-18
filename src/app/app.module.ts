@@ -16,7 +16,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatButtonModule } from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -50,6 +50,7 @@ import { LoaderService } from 'src/Services/LoaderService';
     AppRoutingModule,
     MatTableModule,
     MatToolbarModule,
+    MatButtonModule,
     MatCardModule,
     MatInputModule,
     NgFor,
