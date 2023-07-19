@@ -33,7 +33,7 @@ export class KVS_Service {
         const result = await this.http.get(url, { headers }).toPromise();
         // Hide loader on successful response
         this.loaderService.hideLoader();
-
+        
         return result;
       }
 

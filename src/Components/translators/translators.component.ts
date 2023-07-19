@@ -191,7 +191,12 @@ export class TranslatorsComponent implements OnInit {
           this.KVS1 = kvs;
         })
         .catch((error) => {
-          console.error('Error fetching KVS:', error);
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: error.status + ' ' + error.name,
+              message: error.error.error,
+            },
+          });
           this.KVS1 = [];
         });
 
@@ -204,7 +209,12 @@ export class TranslatorsComponent implements OnInit {
           this.KVS2 = kvs;
         })
         .catch((error) => {
-          console.error('Error fetching KVS:', error);
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: error.status + ' ' + error.name,
+              message: error.error.error,
+            },
+          });
           this.KVS2 = [];
         });
       Promise.all([request1, request2])
@@ -232,7 +242,12 @@ export class TranslatorsComponent implements OnInit {
           //joinedArray is my table's data
         })
         .catch((error) => {
-          console.error('Error fetching KVS:', error);
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: error.status + ' ' + error.name,
+              message: error.error.error,
+            },
+          });
         });
     }
   }

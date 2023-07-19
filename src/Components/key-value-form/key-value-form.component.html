@@ -33,7 +33,7 @@
       </div>
       <div class="form">
         <mat-form-field color="primary">
-          <input
+          <textarea
             matInput
             #input
             class="form-control"
@@ -42,7 +42,7 @@
             name="value"
             required
             autocomplete="off"
-          />
+          ></textarea>
           <mat-error *ngIf="form.controls['value'].hasError('required')">{{
             getErrorMessage()
           }}</mat-error>

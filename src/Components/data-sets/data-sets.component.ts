@@ -12,6 +12,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDialog } from '@angular/material/dialog';
 import { DataSetsFormComponent } from '../data-sets-form/data-sets-form.component';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-sets',
@@ -25,7 +26,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
     MatInputModule,
     FlexLayoutModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
   ],
 })
 export class DataSetsComponent implements AfterViewInit {
@@ -35,14 +36,18 @@ export class DataSetsComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private API_Service: KVS_Service, public dialogService: MatDialog) {}
+  constructor(
+    private API_Service: KVS_Service,
+    public dialogService: MatDialog,
+    public router: Router
+  ) {}
   ngAfterViewInit() {
     this.fetchDataSets();
 
     //this.dataSource.paginator = this.paginator;
   }
   fetchDataSets() {
-    console.log("fetch datasets");
+    console.log('fetch datasets');
     var parameters = '_dataSet=0';
     var request = {
       service: KeyValueStoreWebService.service,
@@ -51,7 +56,7 @@ export class DataSetsComponent implements AfterViewInit {
     };
     this.API_Service.getRequest(request)
       .then((data) => {
-        if(data != null){
+        if (data != null) {
           this.dataSets = data.list;
           this.dataSource = new MatTableDataSource<Datasets>(this.dataSets);
           this.dataSource.paginator = this.paginator;
@@ -61,28 +66,27 @@ export class DataSetsComponent implements AfterViewInit {
         this.dialogService.open(AlertDialogComponent, {
           data: {
             title: error.status + ' ' + error.name,
-            message: error.error.error 
-          }
+            message: error.error.error,
+          },
         });
       });
   }
   openAddDialog() {
     const dialogRef = this.dialogService.open(DataSetsFormComponent, {
-      data: {dataSet: {} }
+      data: { dataSet: {} },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
       if (result != undefined && result === 1) {
         // After dialog is closed we're refreshing the grid
         // For add we're just pushing a new row inside DataService
-        console.log("refresh grid");
         this.fetchDataSets();
       }
     });
   }
   startEdit(row: Datasets) {
-    
+    this.router.navigate(['/kvs/' + row.datasetId]);
   }
   deleteItem(row: Datasets) {}
 }

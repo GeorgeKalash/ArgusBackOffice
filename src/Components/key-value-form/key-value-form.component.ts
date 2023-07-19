@@ -44,13 +44,13 @@ export class KeyValueFormComponent {
     private API_Service: KVS_Service,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<KeyValueFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: KeyValues,
+    @Inject(MAT_DIALOG_DATA) public data: { dataset: any },
     public dataService: KVS_Service,
     public dialogService: MatDialog,
     public notifyService: NotificationService
   ) {
     this.form = this.formBuilder.group({
-      dataset: [''],
+      dataset: [this.data.dataset],
       language: ['1'],
       key: ['', Validators.required],
       value: ['', Validators.required],
@@ -78,6 +78,7 @@ export class KeyValueFormComponent {
 
   public confirmAdd(): void {
     const formValue = this.form.value;
+    console.log(formValue);
     var request = {
       service: KeyValueStoreWebService.service,
       extension: KeyValueStoreWebService.setKVS,

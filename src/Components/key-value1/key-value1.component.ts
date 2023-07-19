@@ -13,6 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { KeyValues } from 'src/models/KeyValues';
 import { KeyValueFormComponent } from '../key-value-form/key-value-form.component';
+import { FormsModule } from '@angular/forms'; // Import the FormsModule
+import { NotificationService } from 'src/Services/notification.service';
+import { KeyValuesOneLang } from 'src/models/KeyValuesOneLang';
 
 @Component({
   selector: 'app-key-value1',
@@ -27,6 +30,7 @@ import { KeyValueFormComponent } from '../key-value-form/key-value-form.componen
     FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
+    FormsModule
   ],
 })
 export class KeyValue1Component implements OnInit {
@@ -36,7 +40,8 @@ export class KeyValue1Component implements OnInit {
     private route: ActivatedRoute,
     private API_Service: KVS_Service,
     public dialogService: MatDialog,
-    public router: Router
+    public router: Router,
+    public notifyService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -50,8 +55,8 @@ export class KeyValue1Component implements OnInit {
       // You can now use 'this.id' in your component to access the id value.
     });
   }
-  displayedColumns: string[] = ['key', 'value', 'actions'];
-  KeyValues: KeyValues[] = [];
+  displayedColumns: string[] = ['key', 'value'];
+  KeyValues: KeyValuesOneLang[] = [];
   dataSource: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -66,9 +71,13 @@ export class KeyValue1Component implements OnInit {
     this.API_Service.getRequest(request)
       .then((data) => {
         if (data != null) {
+          
+          
           this.KeyValues = data.list;
-          console.log(data.list);
-          this.dataSource = new MatTableDataSource<KeyValues>(this.KeyValues);
+          this.KeyValues.forEach((item) => {
+            item.editedValue = item.value;
+          });
+          this.dataSource = new MatTableDataSource<KeyValuesOneLang>(this.KeyValues);
           this.dataSource.paginator = this.paginator;
         }
       })
@@ -83,11 +92,10 @@ export class KeyValue1Component implements OnInit {
   }
   openAddDialog() {
     const dialogRef = this.dialogService.open(KeyValueFormComponent, {
-      data: { dataSet: {} },
+      data: { dataset: this.id },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result != undefined && result === 1) {
         // After dialog is closed we're refreshing the grid
         // For add we're just pushing a new row inside DataService
@@ -95,4 +103,52 @@ export class KeyValue1Component implements OnInit {
       }
     });
   }
+  saveRow(row: any) {
+    if (row.value !== row.editedValue) {
+      const oldEditedValue = row.editedValue;
+      var kvs = new KeyValues(
+        this.id,
+        1,
+        row.key,
+        row.editedValue
+      );
+      var request = {
+        service: KeyValueStoreWebService.service,
+        extension: KeyValueStoreWebService.setKVS,
+      };
+      this.API_Service.postRequest(request, kvs)
+        .then((data) => {
+          if (data != null) {
+            this.notifyService.showSuccess(
+              'Record Saved Successfully',
+              'Success'
+            );
+            row.value = row.editedValue;
+          } else {
+            //return old value in the field
+            row.editedValue = oldEditedValue;
+          }
+        })
+        .catch((error) => {
+          row.editedValue = oldEditedValue;
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: error.status + ' ' + error.name,
+              message: error.error.error,
+            },
+          });
+        });
+    }
+  }
+  applyFilter(filterValue: string) {
+    if (filterValue) {
+      // Apply the filter logic using the filterValue
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    else{
+      this.dataSource = new MatTableDataSource<KeyValues>(this.KeyValues);
+    }
+  }
+
+
 }
