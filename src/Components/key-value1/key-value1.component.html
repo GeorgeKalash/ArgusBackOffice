@@ -1,0 +1,39 @@
+<mat-table class="full-width-table" [dataSource]="dataSource">
+
+    <!-- key Column -->
+    <ng-container matColumnDef="key">
+      <th mat-header-cell *matHeaderCellDef fxFlex="30%" class="centered-title"> key </th>
+      <td mat-cell *matCellDef="let element" fxFlex="30%" class="custom-cell"> {{element.key}} </td>
+    </ng-container>
+  
+    <!-- value Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef fxFlex="60%" class="centered-title"> value </th>
+      <td mat-cell *matCellDef="let element" fxFlex="60%" class="custom-cell"> {{element.value}} </td>
+    </ng-container>
+  
+    <!-- actions -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef fxFlex="10%">
+        <button mat-icon-button  (click)="openAddDialog()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-header-cell>
+  
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="3" class="custom-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+  
+  <mat-paginator
+    #paginator
+    [length]="KeyValues.length"
+    [pageIndex]="0"
+    [pageSize]="50"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+  
+  <!-- </div> -->
+  
