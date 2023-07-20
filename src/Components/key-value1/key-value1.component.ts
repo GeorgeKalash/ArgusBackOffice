@@ -30,11 +30,15 @@ import { KeyValuesOneLang } from 'src/models/KeyValuesOneLang';
     FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
   ],
 })
 export class KeyValue1Component implements OnInit {
   id!: number;
+  displayedColumns: string[] = ['key', 'value'];
+  KeyValues: KeyValuesOneLang[] = [];
+  dataSource: any;
+  title!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,21 +50,39 @@ export class KeyValue1Component implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      if (params['id'] == null || params['id'] == undefined)
-        this.router.navigate(['/dataSets']);
-      else {
-        this.id = +params['id']; // The '+' sign is used to convert the parameter to a number
-        this.fetchKeyValues();
-      }
-      // You can now use 'this.id' in your component to access the id value.
+      this.id = +params['id']; // The '+' sign is used to convert the parameter to a number
+      this.getDataSet(this.id);
+      this.fetchKeyValues();
+      window.scrollTo(0, 0);
     });
   }
-  displayedColumns: string[] = ['key', 'value'];
-  KeyValues: KeyValuesOneLang[] = [];
-  dataSource: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  getDataSet(id: number) {
+    var parameters = '_dataSet=' + id;
+    var request = {
+      service: KeyValueStoreWebService.service,
+      extension: KeyValueStoreWebService.qryDatasets,
+      parameters: parameters,
+    };
+    this.API_Service.getRequest(request)
+      .then((data) => {
+        if (data != null) {
+          if (data.list[0] != null) {
+            this.title = data.list[0].name;
+          }
+        }
+      })
+      .catch((error) => {
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error,
+          },
+        });
+      });
+  }
   fetchKeyValues() {
     const parameters = `_dataSet=${this.id}&_language=1`;
     const request = {
@@ -71,13 +93,13 @@ export class KeyValue1Component implements OnInit {
     this.API_Service.getRequest(request)
       .then((data) => {
         if (data != null) {
-          
-          
           this.KeyValues = data.list;
           this.KeyValues.forEach((item) => {
             item.editedValue = item.value;
           });
-          this.dataSource = new MatTableDataSource<KeyValuesOneLang>(this.KeyValues);
+          this.dataSource = new MatTableDataSource<KeyValuesOneLang>(
+            this.KeyValues
+          );
           this.dataSource.paginator = this.paginator;
         }
       })
@@ -106,12 +128,7 @@ export class KeyValue1Component implements OnInit {
   saveRow(row: any) {
     if (row.value !== row.editedValue) {
       const oldEditedValue = row.value;
-      var kvs = new KeyValues(
-        this.id,
-        1,
-        row.key,
-        row.editedValue
-      );
+      var kvs = new KeyValues(this.id, 1, row.key, row.editedValue);
       var request = {
         service: KeyValueStoreWebService.service,
         extension: KeyValueStoreWebService.setKVS,
@@ -141,18 +158,14 @@ export class KeyValue1Component implements OnInit {
         });
     }
   }
-  
-  
+
   applyFilter(filterValue: string) {
     if (filterValue) {
       // Apply the filter logic using the filterValue
       this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-    else{
+    } else {
       // Reset the filter
       this.dataSource.filter = '';
     }
   }
-
-
 }

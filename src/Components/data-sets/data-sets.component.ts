@@ -43,7 +43,7 @@ export class DataSetsComponent implements AfterViewInit {
   ) {}
   ngAfterViewInit() {
     this.fetchDataSets();
-
+    window.scrollTo(0, 0);
     //this.dataSource.paginator = this.paginator;
   }
   fetchDataSets() {

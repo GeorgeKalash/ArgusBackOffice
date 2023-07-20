@@ -56,6 +56,7 @@ export class TranslatorsComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.fetchLanguages();
     this.fetchDataSets();
     this.filteredDataSets = this.dataSets;
