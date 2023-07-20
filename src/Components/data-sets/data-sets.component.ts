@@ -30,7 +30,7 @@ import { Router } from '@angular/router';
   ],
 })
 export class DataSetsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['datasetId', 'name', 'actions'];
+  displayedColumns: string[] = ['datasetId', 'name'];
   dataSets: Datasets[] = [];
   dataSource: any;
 
@@ -47,7 +47,6 @@ export class DataSetsComponent implements AfterViewInit {
     //this.dataSource.paginator = this.paginator;
   }
   fetchDataSets() {
-    console.log('fetch datasets');
     var parameters = '_dataSet=0';
     var request = {
       service: KeyValueStoreWebService.service,
@@ -77,7 +76,6 @@ export class DataSetsComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result != undefined && result === 1) {
         // After dialog is closed we're refreshing the grid
         // For add we're just pushing a new row inside DataService
@@ -88,5 +86,15 @@ export class DataSetsComponent implements AfterViewInit {
   startEdit(row: Datasets) {
     this.router.navigate(['/kvs/' + row.datasetId]);
   }
-  deleteItem(row: Datasets) {}
+  
+  applyFilter(filterValue: string) {
+    if (filterValue) {
+      // Apply the filter logic using the filterValue
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+    else{
+      // Reset the filter
+      this.dataSource.filter = '';
+    }
+  }
 }

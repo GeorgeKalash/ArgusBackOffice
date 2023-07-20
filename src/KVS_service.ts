@@ -78,13 +78,10 @@ export class KVS_Service {
       this.loaderService.showLoader();
       const url = this.URL + request.service + request.extension;
       const formData = new FormData();
-      //console.log(JSON.stringify(formValues));
       formData.append('record', JSON.stringify(formValues)); // Convert the record object to a JSON string
       const headers = this.getHeadersWithJwt_POST(); // Get headers with JWT
       if (headers != null) {
         this.loaderService.hideLoader();
-        //console.log(url);
-        //console.log(headers);
         return this.http.post(url, formData, { headers: headers }).toPromise();
       } else {
         this.loaderService.hideLoader();

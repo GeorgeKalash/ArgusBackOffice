@@ -105,7 +105,7 @@ export class KeyValue1Component implements OnInit {
   }
   saveRow(row: any) {
     if (row.value !== row.editedValue) {
-      const oldEditedValue = row.editedValue;
+      const oldEditedValue = row.value;
       var kvs = new KeyValues(
         this.id,
         1,
@@ -137,16 +137,20 @@ export class KeyValue1Component implements OnInit {
               message: error.error.error,
             },
           });
+          row.editedValue = oldEditedValue;
         });
     }
   }
+  
+  
   applyFilter(filterValue: string) {
     if (filterValue) {
       // Apply the filter logic using the filterValue
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
     else{
-      this.dataSource = new MatTableDataSource<KeyValues>(this.KeyValues);
+      // Reset the filter
+      this.dataSource.filter = '';
     }
   }
 

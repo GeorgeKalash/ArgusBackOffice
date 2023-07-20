@@ -42,3 +42,14 @@ height: 100%;
   display: flex;
   align-items: center;
 }
+
+.main-container {
+  display: flex;
+  align-items: center; /* Optional: To vertically align the content */
+}
+
+.actions-button-container,
+  .form-fields-container {
+    margin-right: 10px; /* Optional: To add some space between the two elements */
+    margin-top: 15px;
+  }

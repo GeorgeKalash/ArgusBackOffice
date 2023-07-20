@@ -74,7 +74,7 @@ export class TranslatorsComponent implements OnInit {
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
     else{
-      this.dataSource = new MatTableDataSource<Datasets>(this.joinedArray);
+      this.dataSource.filter = '';
     }
   }
 
@@ -95,7 +95,6 @@ export class TranslatorsComponent implements OnInit {
     this.API_Service.getRequest(request)
       .then((data) => {
         if (data != null) {
-          console.log(data.list);
           this.languages = data.list;
           this.toLanguages = data.list.filter(
             (item: Languages) => item.languageId != 1
@@ -175,7 +174,6 @@ export class TranslatorsComponent implements OnInit {
   }
   onSelectionChange(event: any) {
     const formValues = this.form.value;
-    console.log(formValues);
 
     if (
       formValues.dataset != '' &&
@@ -224,16 +222,16 @@ export class TranslatorsComponent implements OnInit {
             const matchingItem = this.KVS2.find(
               (element) => element.key === item.key
             );
-            if (matchingItem) {
+            //if (matchingItem) {
               return {
                 dataSet: item.dataset,
                 key: item.key,
-                language: matchingItem.language,
+                language: matchingItem == undefined ? formValues.toLanguageId :matchingItem.language,
                 value1: item.value,
-                value2: matchingItem.value,
-                editedValue2: matchingItem.value,
+                value2: matchingItem == undefined ? null : matchingItem.value,
+                editedValue2: matchingItem == undefined ? null : matchingItem.value,
               };
-            }
+            //}
             return item;
           });
 
@@ -253,9 +251,8 @@ export class TranslatorsComponent implements OnInit {
   }
 
   saveRow(row: any) {
-    console.log(row);
     if (row.value2 !== row.editedValue2) {
-      const oldEditedValue2 = row.editedValue2;
+      const oldEditedValue2 = row.value2;
       var kvs = new KeyValues(
         row.dataSet,
         row.language,
@@ -286,6 +283,7 @@ export class TranslatorsComponent implements OnInit {
               message: error.error.error,
             },
           });
+          row.editedValue2 = oldEditedValue2;
         });
     }
   }

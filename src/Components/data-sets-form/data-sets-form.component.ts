@@ -76,7 +76,6 @@ export class DataSetsFormComponent {
 
   public confirmAdd(): void {
     const formValue = this.form.value;
-    //console.log(formValue);
     var request = {
       service: KeyValueStoreWebService.service,
       extension: KeyValueStoreWebService.setDataset,
@@ -84,7 +83,6 @@ export class DataSetsFormComponent {
     this.API_Service.postRequest(request, formValue)
       .then((data) => {
         this.dialogRef.close(1);
-        console.log(data);
         this.notifyService.showSuccess(
           'Record Saved Successfully',
           'Success'

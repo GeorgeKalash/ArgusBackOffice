@@ -21,7 +21,6 @@ import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationService } from 'src/Services/notification.service';
-import { KeyValues } from 'src/models/KeyValues';
 
 @Component({
   selector: 'app-data-sets-form',
@@ -78,7 +77,6 @@ export class KeyValueFormComponent {
 
   public confirmAdd(): void {
     const formValue = this.form.value;
-    console.log(formValue);
     var request = {
       service: KeyValueStoreWebService.service,
       extension: KeyValueStoreWebService.setKVS,
@@ -86,7 +84,6 @@ export class KeyValueFormComponent {
     this.API_Service.postRequest(request, formValue)
       .then((data) => {
         this.dialogRef.close(1);
-        console.log(data);
         this.notifyService.showSuccess(
           'Record Saved Successfully',
           'Success'
