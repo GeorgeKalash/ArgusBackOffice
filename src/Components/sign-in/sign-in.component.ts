@@ -1,4 +1,4 @@
-import { Input, Component, Output, EventEmitter } from '@angular/core';
+import { Input, Component, Output, EventEmitter, ElementRef, OnInit, Renderer2, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MA_Service } from 'src/MA_service';
 import { IdentityServerService } from 'src/WebServices/IdentityServerService';
@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
-export class SignInComponent {
+export class SignInComponent implements AfterViewInit {
+  @ViewChild('usernameInput') usernameInput!: ElementRef;
   form: FormGroup;
   constructor(
     private API_Service: MA_Service,
@@ -23,7 +24,8 @@ export class SignInComponent {
     private formBuilder: FormBuilder,
     private cookieService: CookieService,
     public dialog: MatDialog,
-    public router : Router
+    public router : Router,
+    private renderer: Renderer2
   ) {
     this.form = this.formBuilder.group({
       username: ['', [Validators.required, Validators.email]],
@@ -33,6 +35,13 @@ export class SignInComponent {
 
   getErrorMessage() {
     return this.form.hasError('required') ? 'Required field' : '';
+  }
+
+  ngAfterViewInit() {
+    // Focus the username input field on page load
+    setTimeout(() => {
+      this.renderer.selectRootElement(this.usernameInput.nativeElement).focus();
+    });
   }
 
   submit() {

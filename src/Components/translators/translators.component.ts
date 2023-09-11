@@ -238,6 +238,8 @@ export class TranslatorsComponent implements OnInit {
 
           this.dataSource = new MatTableDataSource<Datasets>(this.joinedArray);
           this.dataSource.paginator = this.paginator;
+
+          this.applyFilter();
           //joinedArray is my table's data
         })
         .catch((error) => {
