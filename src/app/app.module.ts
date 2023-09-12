@@ -34,6 +34,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ToastrModule } from 'ngx-toastr';
 import { LoaderService } from 'src/Services/LoaderService';
+import { ConfirmationDialogComponent } from 'src/Components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { LoaderService } from 'src/Services/LoaderService';
     TranslatorsComponent,
     SignInComponent,
     LoaderComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,

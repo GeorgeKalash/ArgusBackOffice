@@ -31,10 +31,10 @@
 
   <!-- value Column -->
   <ng-container matColumnDef="value">
-    <th mat-header-cell *matHeaderCellDef fxFlex="70%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="60%" class="centered-title">
       value
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="70%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="60%" class="custom-cell">
       <textarea
         matInput
         type="text"
@@ -47,10 +47,22 @@
     </td>
   </ng-container>
 
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef class="centered-title" fxFlex="10%">
+      
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="10%">
+      <button mat-icon-button (click)="openConfirmationDialog(element)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
   <tr
     mat-header-row
     *matHeaderRowDef="displayedColumns"
-    colspan="2"
+    colspan="3"
     class="custom-row"
   ></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

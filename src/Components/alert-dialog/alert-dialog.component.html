@@ -1,11 +1,10 @@
-<mat-card-header>
-    {{title}}
-</mat-card-header>
-<mat-dialog-content>
-    {{message}}
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
+<!-- confirmation-dialog.component.html -->
+<div class="confirmation-dialog">
+  <h1 class="confirmation-title">{{ title }}</h1>
+  <p class="confirmation-message">{{ message }}</p>
+  <div class="button-container">
     <button mat-raised-button color="primary" mat-dialog-close>
-      {{buttonText}}
+      {{ buttonText }}
     </button>
-  </mat-dialog-actions>
+  </div>
+</div>

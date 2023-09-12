@@ -21,30 +21,29 @@
 
   <!-- datasetId Column -->
   <ng-container matColumnDef="datasetId">
-    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title"> datasetId </th>
-    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell"> {{element.datasetId}} </td>
+    <th mat-header-cell *matHeaderCellDef fxFlex="35%" class="centered-title"> datasetId </th>
+    <td mat-cell *matCellDef="let element" fxFlex="35%" class="custom-cell"> {{element.datasetId}} </td>
   </ng-container>
 
   <!-- name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef fxFlex="60%" class="centered-title"> name </th>
-    <td mat-cell *matCellDef="let element" fxFlex="60%" class="custom-cell"> {{element.name}} </td>
+    <th mat-header-cell *matHeaderCellDef fxFlex="55%" class="centered-title"> name </th>
+    <td mat-cell *matCellDef="let element" fxFlex="55%" class="custom-cell"> {{element.name}} </td>
   </ng-container>
 
-  <!-- actions -->
-  <!-- <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef fxFlex="10%">
+   <!-- Delete Column -->
+   <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef class="centered-title" fxFlex="10%">
       
-    </mat-header-cell>
-
-    <mat-cell *matCellDef="let row; let i=index;" fxFlex="10%">
-      <button mat-icon-button  (click)="startEdit(row)">
-        <mat-icon>edit</mat-icon>
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="10%">
+      <button mat-icon-button (click)="deleteItem($event, element)">
+        <mat-icon>delete</mat-icon>
       </button>
-    </mat-cell>
-  </ng-container> -->
+    </td>
+  </ng-container>
   
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="2" class="custom-row"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" colspan="3" class="custom-row"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="startEdit(row)"></tr>
 </mat-table>
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DataSetsFormComponent } from '../data-sets-form/data-sets-form.component';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { NotificationService } from 'src/Services/notification.service';
 
 @Component({
   selector: 'app-data-sets',
@@ -30,16 +32,19 @@ import { Router } from '@angular/router';
   ],
 })
 export class DataSetsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['datasetId', 'name'];
+  displayedColumns: string[] = ['datasetId', 'name', 'delete'];
   dataSets: Datasets[] = [];
   dataSource: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('inputRef') inputRef!: ElementRef<HTMLInputElement>;
 
   constructor(
     private API_Service: KVS_Service,
     public dialogService: MatDialog,
-    public router: Router
+    public router: Router,
+    public dialog: MatDialog,
+    public notifyService: NotificationService
   ) {}
   ngAfterViewInit() {
     this.fetchDataSets();
@@ -59,6 +64,8 @@ export class DataSetsComponent implements AfterViewInit {
           this.dataSets = data.list;
           this.dataSource = new MatTableDataSource<Datasets>(this.dataSets);
           this.dataSource.paginator = this.paginator;
+          const inputValue = this.inputRef.nativeElement.value;
+          this.applyFilter(inputValue);
         }
       })
       .catch((error) => {
@@ -96,5 +103,50 @@ export class DataSetsComponent implements AfterViewInit {
       // Reset the filter
       this.dataSource.filter = '';
     }
+  }
+
+  public deleteRow(element:any): void {
+    var request = {
+      service: KeyValueStoreWebService.service,
+      extension: KeyValueStoreWebService.delDataset,
+    };
+    this.API_Service.postRequest(request, element)
+      .then((data) => {
+        if (data != null) {
+          this.notifyService.showSuccess(
+            'Record Deleted Successfully',
+            'Success'
+          );
+
+          this.fetchDataSets();
+        }
+      })
+      .catch((error) => {
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error,
+          },
+        });
+      });
+  }
+
+  openConfirmationDialog(element: any): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px', // Set the dialog's width as needed
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        // Handle the "YES" action
+        this.deleteRow(element);
+        // Perform your action here
+      }
+    });
+  }
+
+  deleteItem(event: Event, element: any) {
+    event.stopPropagation(); // Stop event propagation
+    this.openConfirmationDialog(element);
   }
 }

@@ -16,6 +16,7 @@ import { KeyValueFormComponent } from '../key-value-form/key-value-form.componen
 import { FormsModule } from '@angular/forms'; // Import the FormsModule
 import { NotificationService } from 'src/Services/notification.service';
 import { KeyValuesOneLang } from 'src/models/KeyValuesOneLang';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-key-value1',
@@ -35,7 +36,7 @@ import { KeyValuesOneLang } from 'src/models/KeyValuesOneLang';
 })
 export class KeyValue1Component implements OnInit {
   id!: number;
-  displayedColumns: string[] = ['key', 'value'];
+  displayedColumns: string[] = ['key', 'value', 'delete'];
   KeyValues: KeyValuesOneLang[] = [];
   dataSource: any;
   title!: string;
@@ -45,7 +46,8 @@ export class KeyValue1Component implements OnInit {
     private API_Service: KVS_Service,
     public dialogService: MatDialog,
     public router: Router,
-    public notifyService: NotificationService
+    public notifyService: NotificationService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -158,7 +160,6 @@ export class KeyValue1Component implements OnInit {
         });
     }
   }
-
   applyFilter(filterValue: string) {
     if (filterValue) {
       // Apply the filter logic using the filterValue
@@ -167,5 +168,50 @@ export class KeyValue1Component implements OnInit {
       // Reset the filter
       this.dataSource.filter = '';
     }
+  }
+
+  deleteRow(row: any) {
+    var kvs = new KeyValues(this.id, 1, row.key, row.editedValue);
+    var request = {
+      service: KeyValueStoreWebService.service,
+      extension: KeyValueStoreWebService.delKVS,
+    };
+    this.API_Service.postRequest(request, kvs)
+      .then((data) => {
+        if (data != null) {
+          this.notifyService.showSuccess(
+            'Record Deleted Successfully',
+            'Success'
+          );
+
+          this.fetchKeyValues();
+        }
+      })
+      .catch((error) => {
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error,
+          },
+        });
+      });
+  }
+
+  openConfirmationDialog(element: any): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px', // Set the dialog's width as needed
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        // Handle the "YES" action
+        console.log('User clicked YES');
+        this.deleteRow(element);
+        // Perform your action here
+      } else {
+        // Handle the "NO" action or dialog closure
+        console.log('User clicked NO or closed the dialog');
+      }
+    });
   }
 }

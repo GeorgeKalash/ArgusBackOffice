@@ -6,6 +6,7 @@ export const KeyValueStoreWebService = {
 
   //setKVS()
   setKVS: 'setKVS',
+  delKVS: 'delKVS',
 
   //qryLanguages()
   qryLanguages: 'qryLanguages',
@@ -18,4 +19,5 @@ export const KeyValueStoreWebService = {
 
   //setDataset()
   setDataset: 'setDataset',
+  delDataset: 'delDataset',
 };

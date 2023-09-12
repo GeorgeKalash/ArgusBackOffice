@@ -1,0 +1,10 @@
+<!-- confirmation-dialog.component.html -->
+<div class="confirmation-dialog">
+    <h1 class="confirmation-title">Confirmation</h1>
+    <p class="confirmation-message">Are you sure you want to perform this action?</p>
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="dialogRef.close(true)">YES</button>
+      <button mat-raised-button color="warn" (click)="dialogRef.close(false)">NO</button>
+    </div>
+  </div>
+  
