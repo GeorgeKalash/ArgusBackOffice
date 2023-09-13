@@ -93,7 +93,39 @@ export class KVS_Service {
       throw error;
     }
   }
-  
+
+  postRequestAttachment(request: any, formValues: any, file: File | null) {
+    try {
+      this.loaderService.showLoader();
+      const url = this.URL + request.service + request.extension;
+      const formData = new FormData();
+      
+      console.log(request);
+      console.log(formValues);
+      // Add form values as JSON
+      formData.append('record', JSON.stringify(formValues));
+      // Add the file if it exists
+      if (file) {
+        formData.append('file', file);
+      }
+      
+      const headers = this.getHeadersWithJwt_POST(); // Get headers with JWT
+      console.log(formData);
+      console.log(headers);
+      
+      if (headers != null) {
+        this.loaderService.hideLoader();
+        return this.http.post(url, formData, { headers: headers }).toPromise();
+      } else {
+        this.loaderService.hideLoader();
+        return Promise.resolve({}); // Return an empty object wrapped in a resolved promise
+      }
+    } catch (error) {
+      // Hide loader on error
+      this.loaderService.hideLoader();
+      throw error;
+    }
+  }
 
   public getHeadersWithJwt_GET(): any {
     const jwt = this.getJwtFromCookies(); // Retrieve JWT from cookies

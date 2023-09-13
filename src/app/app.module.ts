@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -35,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LoaderService } from 'src/Services/LoaderService';
 import { ConfirmationDialogComponent } from 'src/Components/confirmation-dialog/confirmation-dialog.component';
+import { ReportTemplatesComponent } from 'src/Components/report-templates/report-templates.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { ConfirmationDialogComponent } from 'src/Components/confirmation-dialog/
     SignInComponent,
     LoaderComponent,
     AlertDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    ReportTemplatesComponent
   ],
   imports: [
     BrowserModule,
@@ -55,8 +58,8 @@ import { ConfirmationDialogComponent } from 'src/Components/confirmation-dialog/
     MatButtonModule,
     MatCardModule,
     MatInputModule,
+    MatIconModule,
     NgFor,
-    MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
     MatFormFieldModule,

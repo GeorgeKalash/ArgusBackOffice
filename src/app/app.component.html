@@ -5,8 +5,9 @@
     src="../assets/images/argusLogo.png"
   />
   <span class="example-spacer"></span>
-  <button *ngIf="shouldShowLinks" [routerLink]="['dataSets']"> Data Sets </button>
-  <button *ngIf="shouldShowLinks" [routerLink]="['translators']"> Translators </button>
+  <button *ngIf="shouldShowLinks" [routerLink]="['dataSets']">Data Sets</button>
+  <button *ngIf="shouldShowLinks" [routerLink]="['translators']">Translators</button>
+  <button *ngIf="shouldShowLinks" [routerLink]="['reportTemplates']">Templates</button>
   <button *ngIf="shouldShowLinks" (click)="signOut()">Sign Out</button>
 </div>
 <app-loader></app-loader>

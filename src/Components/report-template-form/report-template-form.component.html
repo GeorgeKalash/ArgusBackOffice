@@ -1,0 +1,49 @@
+<div class="form-card">
+    <mat-card-title style="height: 50px; font-size: 20px; font-style: bold"
+      >Report Template</mat-card-title
+    >
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="(submit)">
+        <div class="form">
+          <mat-form-field color="primary">
+            <input
+              type="hidden"
+              formControlName="resourceId"
+              [value]="form.get('resourceId')?.value"
+            />
+            <input
+              matInput
+              #input
+              class="form-control"
+              placeholder="layoutId"
+              formControlName="layoutId"
+              name="layoutId"
+              required
+              autocomplete="off"
+            />
+            <mat-error *ngIf="form.controls['layoutId'].hasError('required')">{{
+              getErrorMessage()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form">
+            <div>
+                <label for="fileInput">Choose a file:</label>
+                <input type="file" id="fileInput" (change)="onFileSelected($event)" formControlName="fileName" accept=".pdf, .docx, .jpg, .png" />
+            </div>
+        </div>
+  
+        <div mat-dialog-actions>
+          <button
+            mat-button
+            type="submit"
+            (click)="confirmAdd()"
+          >
+            Save
+          </button>
+          <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </div>
+  

@@ -20,4 +20,8 @@ export const KeyValueStoreWebService = {
   //setDataset()
   setDataset: 'setDataset',
   delDataset: 'delDataset',
+
+
+  qryAttachment: 'qryAttachment',
+  setAttachment: 'setAttachment',
 };
