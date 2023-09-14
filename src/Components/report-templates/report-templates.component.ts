@@ -47,7 +47,6 @@ export class ReportTemplatesComponent {
       .pipe(startWith('')) // start with an empty string
       .subscribe((value) => {
         this.filteredResourceIds = this.filterResourceIds(value);
-        console.log(this.filteredResourceIds);
         });
 
       this.filteredModules = this.modules;
@@ -63,7 +62,8 @@ export class ReportTemplatesComponent {
     // filter the datasets based on the search value
     const filterValue = value.toString().toLowerCase();
     return this.resourceIds.filter((sets) =>
-      sets.value.toString().toLowerCase().includes(filterValue)
+      sets.value.toString().toLowerCase().includes(filterValue) 
+      || sets.key.toString().toLowerCase().includes(filterValue)
     );
   }
 
@@ -72,6 +72,7 @@ export class ReportTemplatesComponent {
     const filterValue = value.toString().toLowerCase();
     return this.modules.filter((sets) =>
       sets.value.toString().toLowerCase().includes(filterValue)
+      || sets.key.toString().toLowerCase().includes(filterValue)
     );
   }
 
