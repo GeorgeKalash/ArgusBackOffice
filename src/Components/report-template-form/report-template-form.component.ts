@@ -48,7 +48,6 @@ export class ReportTemplateFormComponent {
     public notifyService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: { resourceId: any }
   ) {
-    console.log(this.data);
     this.form = this.formBuilder.group({
       resourceId: [this.data.resourceId],
       layoutId: ['', Validators.required],
@@ -65,6 +64,12 @@ export class ReportTemplateFormComponent {
   selectedFile: File | null = null;
 
   onFileSelected(event: any) {
+    const fileInput = event.target;
+    const fullPath = fileInput.value;
+    const fileName = fullPath.replace(/^.*[\\\/]/, ''); // Extract the filename
+
+    // Set the value of the 'fileName' form control
+    this.form.get('fileName')?.setValue(fileName);
     // Get the selected file
     this.selectedFile = event.target.files[0];
   }
@@ -83,20 +88,18 @@ export class ReportTemplateFormComponent {
 
   public confirmAdd(): void {
     const formValue = this.form.value;
-    console.log(formValue);
     var request = {
       service: KeyValueStoreWebService.service,
       extension: KeyValueStoreWebService.setAttachment,
     };
-    console.log("post req");
-    console.log(this.selectedFile);
-    this.API_Service.postRequestAttachment(request, formValue, this.selectedFile)
+    this.API_Service.postRequestAttachment(
+      request,
+      formValue,
+      this.selectedFile
+    )
       .then((data) => {
         this.dialogRef.close(1);
-        this.notifyService.showSuccess(
-          'Record Saved Successfully',
-          'Success'
-        );
+        this.notifyService.showSuccess('Record Saved Successfully', 'Success');
       })
       .catch((error) => {
         this.dialogService.open(AlertDialogComponent, {

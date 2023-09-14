@@ -100,8 +100,6 @@ export class KVS_Service {
       const url = this.URL + request.service + request.extension;
       const formData = new FormData();
       
-      console.log(request);
-      console.log(formValues);
       // Add form values as JSON
       formData.append('record', JSON.stringify(formValues));
       // Add the file if it exists
@@ -110,8 +108,6 @@ export class KVS_Service {
       }
       
       const headers = this.getHeadersWithJwt_POST(); // Get headers with JWT
-      console.log(formData);
-      console.log(headers);
       
       if (headers != null) {
         this.loaderService.hideLoader();

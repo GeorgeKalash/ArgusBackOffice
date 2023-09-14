@@ -24,4 +24,5 @@ export const KeyValueStoreWebService = {
 
   qryAttachment: 'qryAttachment',
   setAttachment: 'setAttachment',
+  delAttachment: 'delAttachment',
 };

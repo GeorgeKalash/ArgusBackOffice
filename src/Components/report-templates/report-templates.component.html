@@ -1,39 +1,65 @@
 <div class="main-container">
+  
   <div class="actions-button-container">
     <button mat-icon-button (click)="openAddDialog()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
-
-  <mat-form-field>
-    <mat-label>Resources</mat-label>
-    <input
-      type="text"
-      matInput
-      [formControl]="resourceId"
-      [matAutocomplete]="auto"
-      required
-    />
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="onSelectionChangeResourceId($event)"
-    >
-      <mat-option
-        *ngFor="let resource of filteredResourceIds"
-        [value]="resource.key"
+  <div class="form-fields-container">
+    <!-- Module -->
+    <mat-form-field>
+      <mat-label>Module</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="module"
+        [matAutocomplete]="moduleAuto"
+        required
+      />
+      <mat-autocomplete
+        #moduleAuto="matAutocomplete"
+        (optionSelected)="onSelectionChangeModule($event)"
       >
-        {{ resource.value }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <mat-form-field>
-    <input
-      matInput
-      placeholder="Search"
-      #inputRef
-      (change)="applyFilter(inputRef.value)"
-    />
-  </mat-form-field>
+        <mat-option
+          *ngFor="let module of filteredModules"
+          [value]="module.key"
+        >
+          {{ module.value }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- Resources -->
+    <mat-form-field>
+      <mat-label>Resources</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="resourceId"
+        [matAutocomplete]="auto"
+        required
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onSelectionChangeResourceId($event)"
+      >
+        <mat-option
+          *ngFor="let resource of filteredResourceIds"
+          [value]="resource.key"
+        >
+          {{ resource.value }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Search"
+        #inputRef
+        (change)="applyFilter(inputRef.value)"
+      />
+    </mat-form-field>
+  </div>
 </div>
 
 <mat-table class="full-width-table" [dataSource]="dataSource">
@@ -47,25 +73,36 @@
   </ng-container>
 
   <ng-container matColumnDef="fileName">
-    <th mat-header-cell *matHeaderCellDef fxFlex="50%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">
       fileName
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="50%" class="custom-cell">
-      <a [href]="element.url" target="_blank" rel="noopener noreferrer">{{ element.fileName }}</a>
+    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
+      <a [href]="element.url" target="_blank" rel="noopener noreferrer">{{
+        element.fileName
+      }}</a>
+    </td>
+  </ng-container>
+
+  
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef class="centered-title" fxFlex="10%">
+      
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="10%">
+      <button mat-icon-button (click)="openConfirmationDialog(element)">
+        <mat-icon>delete</mat-icon>
+      </button>
     </td>
   </ng-container>
 
   <tr
     mat-header-row
     *matHeaderRowDef="displayedColumns"
-    colspan="2"
+    colspan="3"
     class="custom-row"
   ></tr>
-  <tr
-    mat-row
-    *matRowDef="let row; columns: displayedColumns"
-  ></tr>
-
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </mat-table>
 
 <!-- </div> -->
