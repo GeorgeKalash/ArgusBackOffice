@@ -1,0 +1,133 @@
+<form [formGroup]="form" style="padding-top: 10px">
+  <div class="form-fields-container">
+    <mat-form-field>
+      <mat-label>Account</mat-label>
+      <mat-select
+        formControlName="accountId"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        <mat-option
+          *ngFor="let account of accounts"
+          [value]="account.accountId"
+        >
+          {{ account.accountName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Event Type</mat-label>
+      <mat-select
+        formControlName="eventType"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        <mat-option
+          *ngFor="let eventType of eventTypes"
+          [value]="eventType.key"
+        >
+          {{ eventType.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>UserId</mat-label>
+      <input
+        matInput
+        formControlName="userId"
+        (change)="onSelectionChange($event)"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Contains</mat-label>
+      <input
+        matInput
+        formControlName="contains"
+        (change)="onSelectionChange($event)"
+      />
+    </mat-form-field>
+  </div>
+</form>
+
+<mat-table class="full-width-table" [dataSource]="dataSource">
+  <!-- accountId Column -->
+  <ng-container matColumnDef="accountId">
+    <th mat-header-cell *matHeaderCellDef fxFlex="5%" class="centered-title">
+      account
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="5%" class="custom-cell">
+      {{ element.accountId }}
+    </td>
+  </ng-container>
+  <!-- userId Column -->
+  <ng-container matColumnDef="userId">
+    <th mat-header-cell *matHeaderCellDef fxFlex="5%" class="centered-title">
+      userId
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="5%" class="custom-cell">
+      {{ element.userId }}
+    </td>
+  </ng-container>
+
+  <!-- token Column -->
+  <ng-container matColumnDef="token">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">
+      token
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
+      <textarea
+        matInput
+        type="text"
+        readonly="true"
+        [(ngModel)]="element.token"
+        class="input-in-cell"
+      >
+      </textarea>
+    </td>
+  </ng-container>
+
+  <!-- url Column -->
+  <ng-container matColumnDef="url">
+    <th mat-header-cell *matHeaderCellDef fxFlex="30%" class="centered-title">
+      url
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="30%" class="custom-cell">
+      {{ element.url }}
+    </td>
+  </ng-container>
+
+  <!-- requestBody Column -->
+  <ng-container matColumnDef="requestBody">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">
+      request Body / Error Message
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
+      <textarea
+        matInput
+        type="text"
+        readonly="true"
+        [(ngModel)]="element.requestBody"
+        class="input-in-cell"
+      >
+      </textarea>
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="displayedColumns"
+    colspan="4"
+    class="custom-row"
+  ></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</mat-table>
+
+<mat-paginator
+  #paginator
+  [length]="requests.length"
+  [pageIndex]="0"
+  [pageSize]="50"
+  showFirstLastButtons
+>
+</mat-paginator>

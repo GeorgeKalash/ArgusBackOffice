@@ -2,6 +2,7 @@
 import { Routes } from '@angular/router';
 import { DataSetsComponent } from '../Components/data-sets/data-sets.component';
 import { TranslatorsComponent } from '../Components/translators/translators.component';
+import { LoggingComponent } from '../Components/logging/logging.component';
 import { SignInComponent } from '../Components/sign-in/sign-in.component';
 import { KeyValue1Component } from '../Components/key-value1/key-value1.component';
 import { ReportTemplatesComponent } from 'src/Components/report-templates/report-templates.component';
@@ -9,6 +10,7 @@ import { ReportTemplatesComponent } from 'src/Components/report-templates/report
 export const appRoutes: Routes = [
   { path: 'dataSets', component: DataSetsComponent },
   { path: 'translators', component: TranslatorsComponent },
+  { path: 'logging', component: LoggingComponent },
   { path: 'signin', component: SignInComponent },
   { path: 'kvs/:id', component: KeyValue1Component },
   { path: 'reportTemplates', component: ReportTemplatesComponent },
