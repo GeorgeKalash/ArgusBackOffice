@@ -3,11 +3,7 @@ import { KVS_Service } from '../../KVS_service';
 import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService';
 import { RequestsWebService } from 'src/WebServices/RequestsWebService';
 import { IdentityServerService } from 'src/WebServices/IdentityServerService';
-import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { KeyValues } from 'src/models/KeyValues';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,7 +20,6 @@ import { Requests } from 'src/models/Requests';
   styleUrls: ['./logging.component.scss'],
 })
 export class LoggingComponent implements OnInit {
-  
   accounts: Accounts[] = [];
   eventTypes: KeyValues[] = [];
   requests: Requests[] = [];
@@ -32,8 +27,14 @@ export class LoggingComponent implements OnInit {
   form: FormGroup;
   filterValue = '';
 
-  displayedColumns: string[] = ['accountId','userId','clockStamp', 'token', 'url', 'requestBody'];
-  
+  displayedColumns: string[] = [
+    'accountId',
+    'userId',
+    'clockStamp',
+    'token',
+    'url',
+    'requestBody',
+  ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -73,8 +74,11 @@ export class LoggingComponent implements OnInit {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${this.padNumber(day)}/${this.padNumber(month)}/${year}`;
-  }
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return `${this.padNumber(day)}/${this.padNumber(month)}/${year} ${this.padNumber(hours)}:${this.padNumber(minutes)}:${this.padNumber(seconds)}`;
+}
 
   padNumber(num: number): string {
     return num < 10 ? '0' + num : num.toString();
@@ -147,13 +151,12 @@ export class LoggingComponent implements OnInit {
     if (
       formValues.accountId != '' &&
       formValues.eventType != '' &&
-      formValues.userId != '' 
+      formValues.userId != ''
     ) {
       var request = {
         service: RequestsWebService.service,
         extension: RequestsWebService.qryREQ,
-        parameters: 
-        `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_contains=${formValues.contains}&_from=&_to=&
+        parameters: `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_contains=${formValues.contains}&_from=&_to=&
         `,
       };
       this.API_Service.getRequest(request)
