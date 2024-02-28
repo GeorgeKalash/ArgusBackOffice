@@ -32,7 +32,7 @@ export class LoggingComponent implements OnInit {
   form: FormGroup;
   filterValue = '';
 
-  displayedColumns: string[] = ['accountId','userId', 'token', 'url', 'requestBody'];
+  displayedColumns: string[] = ['accountId','userId','clockStamp', 'token', 'url', 'requestBody'];
   
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -50,6 +50,34 @@ export class LoggingComponent implements OnInit {
       userId: '',
       contains: '',
     });
+  }
+
+  formatDate(dateStr: string): string {
+    const timestamp = this.extractTimestamp(dateStr);
+    const date = new Date(timestamp);
+    return this.formatDateAsDDMMYYYY(date);
+  }
+
+  extractTimestamp(dateStr: string | null): number {
+    if (dateStr) {
+      const matchResult = dateStr.match(/\d+/);
+      if (matchResult) {
+        return parseInt(matchResult[0]);
+      }
+    }
+    // Default return value if no match is found
+    return 0;
+  }
+
+  formatDateAsDDMMYYYY(date: Date): string {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${this.padNumber(day)}/${this.padNumber(month)}/${year}`;
+  }
+
+  padNumber(num: number): string {
+    return num < 10 ? '0' + num : num.toString();
   }
 
   ngOnInit() {
