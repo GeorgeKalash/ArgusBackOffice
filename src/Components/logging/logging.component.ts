@@ -77,11 +77,23 @@ export class LoggingComponent implements OnInit {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    return `${this.padNumber(day)}/${this.padNumber(month)}/${year} ${this.padNumber(hours)}:${this.padNumber(minutes)}:${this.padNumber(seconds)}`;
+    const amPM = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+
+    return `${this.padNumber(day)}/${this.padNumber(month)}/${year} ${this.padNumber(formattedHours)}:${this.padNumber(minutes)}:${this.padNumber(seconds)} ${amPM}`;
 }
 
-  padNumber(num: number): string {
-    return num < 10 ? '0' + num : num.toString();
+padNumber(number: number): string {
+    return number < 10 ? '0' + number : '' + number;
+}
+
+  onRefreshClick() {
+    const formData = this.extractFormData();
+    this.onSelectionChange(formData);
+  }
+
+  extractFormData() {
+    return this.form.value;
   }
 
   ngOnInit() {
