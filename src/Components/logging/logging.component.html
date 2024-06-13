@@ -1,6 +1,21 @@
 <form [formGroup]="form" style="padding-top: 10px">
   <div class="form-fields-container">
     <mat-form-field>
+      <mat-label>baseUrl</mat-label>
+      <mat-select
+        formControlName="baseUrl"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        <mat-option
+          *ngFor="let baseUrl of baseUrls"
+          [value]="baseUrl.value"
+        >
+          {{ baseUrl.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Account</mat-label>
       <mat-select
         formControlName="accountId"
@@ -14,6 +29,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    
 
     <mat-form-field>
       <mat-label>Event Type</mat-label>
@@ -30,6 +46,9 @@
       </mat-select>
     </mat-form-field>
 
+   
+  </div>
+  <div class="form-fields-container">
     <mat-form-field>
       <mat-label>UserId</mat-label>
       <input
@@ -47,10 +66,11 @@
         (change)="onSelectionChange($event)"
       />
     </mat-form-field>
+    <div class="button-container">
+      <button class="small-button" (click)="onRefreshClick()">Refresh</button>
+    </div>
   </div>
-  <div class="button-container">
-    <button class="small-button" (click)="onRefreshClick()">Refresh</button>
-  </div>
+  
   
 </form>
 

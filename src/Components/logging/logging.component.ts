@@ -22,6 +22,7 @@ import { Requests } from 'src/models/Requests';
 export class LoggingComponent implements OnInit {
   accounts: Accounts[] = [];
   eventTypes: KeyValues[] = [];
+  baseUrls: KeyValues[] = [];
   requests: Requests[] = [];
   dataSource: any;
   form: FormGroup;
@@ -46,6 +47,7 @@ export class LoggingComponent implements OnInit {
     public notifyService: NotificationService
   ) {
     this.form = this.formBuilder.group({
+      baseUrl: '',
       accountId: '',
       eventType: '',
       userId: '',
@@ -77,15 +79,16 @@ export class LoggingComponent implements OnInit {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    const amPM = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+    return `${this.padNumber(day)}/${this.padNumber(
+      month
+    )}/${year} ${this.padNumber(hours)}:${this.padNumber(
+      minutes
+    )}:${this.padNumber(seconds)}`;
+  }
 
-    return `${this.padNumber(day)}/${this.padNumber(month)}/${year} ${this.padNumber(formattedHours)}:${this.padNumber(minutes)}:${this.padNumber(seconds)} ${amPM}`;
-}
-
-padNumber(number: number): string {
-    return number < 10 ? '0' + number : '' + number;
-}
+  padNumber(num: number): string {
+    return num < 10 ? '0' + num : num.toString();
+  }
 
   onRefreshClick() {
     const formData = this.extractFormData();
@@ -100,6 +103,7 @@ padNumber(number: number): string {
     window.scrollTo(0, 0);
     this.fetchAccounts();
     this.fetchErrorType();
+    this.fetchBaseUrls();
   }
 
   // applyFilter() {
@@ -158,14 +162,41 @@ padNumber(number: number): string {
       });
   }
 
+  fetchBaseUrls() {
+    var parameters = '_dataSet=174&_language=1';
+    var request = {
+      service: KeyValueStoreWebService.service,
+      extension: KeyValueStoreWebService.qryKVS,
+      parameters: parameters,
+    };
+    this.API_Service.getRequest(request)
+      .then((data) => {
+        if (data != null) {
+          this.baseUrls = data.list;
+        }
+      })
+      .catch((error) => {
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error,
+          },
+        });
+      });
+  }
+
   onSelectionChange(event: any) {
     const formValues = this.form.value;
+    console.log(formValues)
+    console.log(formValues.baseUrl)
     if (
       formValues.accountId != '' &&
       formValues.eventType != '' &&
+      formValues.baseUrl != '' &&
       formValues.userId != ''
     ) {
       var request = {
+        baseUrl: formValues.baseUrl,
         service: RequestsWebService.service,
         extension: RequestsWebService.qryREQ,
         parameters: `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_contains=${formValues.contains}&_from=&_to=&

@@ -1,6 +1,6 @@
 .form-fields-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns as needed */
+    grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
     grid-gap: 10px; /* Adjust the gap between form fields */
   }
 
@@ -65,6 +65,6 @@
   cursor: pointer;
 }
 .button-container {
-  display: grid;
+  height: 15px;
   grid-template-columns: repeat(12, 1fr); /* Adjust the number of columns as needed */
 }

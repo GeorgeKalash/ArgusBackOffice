@@ -6,7 +6,7 @@ export class KeyValuesOneLang extends KeyValues {
   constructor(
     dataset: number,
     language: number,
-    key: number,
+    key: string,
     value: string,
     editedValue: string
   ) {

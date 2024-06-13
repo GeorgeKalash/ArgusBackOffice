@@ -25,9 +25,14 @@ export class KVS_Service {
 
   async getRequest(body: any): Promise<any> {
     try {
+      const baseUrl = body.baseUrl ?? this.URL;
+      console.log('body.baseUrl')
+      console.log(body.baseUrl)
+      console.log('baseUrl')
+      console.log(baseUrl)
       this.loaderService.showLoader();
       const url =
-        this.URL + body.service + body.extension + '?' + body.parameters;
+        baseUrl + body.service + body.extension + '?' + body.parameters;
       const headers = this.getHeadersWithJwt_GET(); // Get headers with JWT
       if (headers != null) {
         const result = await this.http.get(url, { headers }).toPromise();

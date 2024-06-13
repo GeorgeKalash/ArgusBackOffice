@@ -111,7 +111,7 @@ export class ReportTemplatesComponent {
 
 
   fetchResourceIds(module: any) {
-    console.log("fetchResourceIds");
+    
     var parameters = '_dataset=22&_language=1';
     var request = {
       service: KeyValueStoreWebService.service,
@@ -121,8 +121,10 @@ export class ReportTemplatesComponent {
     this.API_Service.getRequest(request)
       .then((data: { list: KeyValues[] }) => {
         if (data != null) {
-          this.resourceIds = data.list.filter((item) => Math.floor(item.key / 1000) === module);
-          console.log(this.resourceIds);
+          this.resourceIds = data.list.filter((item) => {
+            const numericKey = Number(item.key.replace(/\s/g, ''));
+            return Math.floor(numericKey / 1000) === parseInt(module);
+        });
         }
       })
       .catch((error) => {
