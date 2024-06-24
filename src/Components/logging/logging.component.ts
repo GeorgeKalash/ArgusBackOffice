@@ -31,6 +31,7 @@ export class LoggingComponent implements OnInit {
   displayedColumns: string[] = [
     'accountId',
     'userId',
+    'recordId',
     'clockStamp',
     'token',
     'url',
@@ -73,12 +74,12 @@ export class LoggingComponent implements OnInit {
   }
 
   formatDateAsDDMMYYYY(date: Date): string {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const seconds = date.getUTCSeconds();
     return `${this.padNumber(day)}/${this.padNumber(
       month
     )}/${year} ${this.padNumber(hours)}:${this.padNumber(
@@ -187,8 +188,8 @@ export class LoggingComponent implements OnInit {
 
   onSelectionChange(event: any) {
     const formValues = this.form.value;
-    console.log(formValues)
-    console.log(formValues.baseUrl)
+    console.log(formValues);
+    console.log(formValues.baseUrl);
     if (
       formValues.accountId != '' &&
       formValues.eventType != '' &&

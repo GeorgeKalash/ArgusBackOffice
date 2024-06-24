@@ -77,40 +77,50 @@
 <mat-table class="full-width-table" [dataSource]="dataSource">
   <!-- accountId Column -->
   <ng-container matColumnDef="accountId">
-    <th mat-header-cell *matHeaderCellDef fxFlex="7%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="6%" class="centered-title">
       account
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="7%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="6%" class="custom-cell">
       {{ element.accountId }}
     </td>
   </ng-container>
 
   <!-- userId Column -->
   <ng-container matColumnDef="userId">
-    <th mat-header-cell *matHeaderCellDef fxFlex="7%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="6%" class="centered-title">
       userId
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="7%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="6%" class="custom-cell">
       {{ element.userId }}
+    </td>
+  </ng-container>
+
+<!-- recordId Column -->
+  <ng-container matColumnDef="recordId">
+    <th mat-header-cell *matHeaderCellDef fxFlex="6%" class="centered-title">
+      recordId
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="6%" class="custom-cell">
+      {{ element.recordId }}
     </td>
   </ng-container>
 
   <!-- clockStamp Column -->
   <ng-container matColumnDef="clockStamp">
-    <th mat-header-cell *matHeaderCellDef fxFlex="10%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="9%" class="centered-title">
       clockStamp
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="10%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="9%" class="custom-cell">
       {{ formatDate(element.clockStamp) }}
     </td>
   </ng-container>
 
   <!-- token Column -->
   <ng-container matColumnDef="token">
-    <th mat-header-cell *matHeaderCellDef fxFlex="25%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="24%" class="centered-title">
       token
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="25%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="24%" class="custom-cell">
       <textarea
         matInput
         type="text"
@@ -124,10 +134,10 @@
 
   <!-- url Column -->
   <ng-container matColumnDef="url">
-    <th mat-header-cell *matHeaderCellDef fxFlex="25%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="24%" class="centered-title">
       url
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="25%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="24%" class="custom-cell">
       <textarea
         matInput
         type="text"
@@ -141,10 +151,10 @@
 
   <!-- requestBody Column -->
   <ng-container matColumnDef="requestBody">
-    <th mat-header-cell *matHeaderCellDef fxFlex="27%" class="centered-title">
+    <th mat-header-cell *matHeaderCellDef fxFlex="25%" class="centered-title">
       request Body / Error Message
     </th>
-    <td mat-cell *matCellDef="let element" fxFlex="27%" class="custom-cell">
+    <td mat-cell *matCellDef="let element" fxFlex="25%" class="custom-cell">
       <textarea
         matInput
         type="text"
