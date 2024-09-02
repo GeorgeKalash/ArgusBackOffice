@@ -15,6 +15,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from 'src/Services/notification.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-data-sets',
@@ -29,6 +30,7 @@ import { NotificationService } from 'src/Services/notification.service';
     FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
+    FormsModule,
   ],
 })
 export class DataSetsComponent implements AfterViewInit {
@@ -62,6 +64,9 @@ export class DataSetsComponent implements AfterViewInit {
       .then((data) => {
         if (data != null) {
           this.dataSets = data.list;
+          this.dataSets.forEach((item) => {
+            item.editedValue = item.name;
+          });
           this.dataSource = new MatTableDataSource<Datasets>(this.dataSets);
           this.dataSource.paginator = this.paginator;
           const inputValue = this.inputRef.nativeElement.value;
@@ -93,19 +98,53 @@ export class DataSetsComponent implements AfterViewInit {
   startEdit(row: Datasets) {
     this.router.navigate(['/kvs/' + row.datasetId]);
   }
-  
+
+  saveRow(row: any) {
+    if (row.name !== row.editedValue) {
+      const oldEditedValue = row.name;
+      row.name = row.editedValue;
+      const formValue = row;
+      var request = {
+        service: KeyValueStoreWebService.service,
+        extension: KeyValueStoreWebService.setDataset,
+      };
+      this.API_Service.postRequest(request, formValue)
+        .then((data) => {
+          if (data != null) {
+            this.notifyService.showSuccess(
+              'Record Saved Successfully',
+              'Success'
+            );
+            row.name = row.editedValue;
+          } else {
+            //return old value in the field
+            row.editedValue = oldEditedValue;
+          }
+        })
+        .catch((error) => {
+          row.editedValue = oldEditedValue;
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: error.status + ' ' + error.name,
+              message: error.error.error,
+            },
+          });
+          row.editedValue = oldEditedValue;
+        });
+    }
+  }
+
   applyFilter(filterValue: string) {
     if (filterValue) {
       // Apply the filter logic using the filterValue
       this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-    else{
+    } else {
       // Reset the filter
       this.dataSource.filter = '';
     }
   }
 
-  public deleteRow(element:any): void {
+  public deleteRow(element: any): void {
     var request = {
       service: KeyValueStoreWebService.service,
       extension: KeyValueStoreWebService.delDataset,
