@@ -6,10 +6,7 @@
         formControlName="baseUrl"
         (selectionChange)="onSelectionChange($event)"
       >
-        <mat-option
-          *ngFor="let baseUrl of baseUrls"
-          [value]="baseUrl.value"
-        >
+        <mat-option *ngFor="let baseUrl of baseUrls" [value]="baseUrl.value">
           {{ baseUrl.value }}
         </mat-option>
       </mat-select>
@@ -29,7 +26,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    
 
     <mat-form-field>
       <mat-label>Event Type</mat-label>
@@ -45,10 +41,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-   
   </div>
-  <div class="form-fields-container">
+  <div class="form-fields-container2">
     <mat-form-field>
       <mat-label>UserId</mat-label>
       <input
@@ -66,12 +60,19 @@
         (change)="onSelectionChange($event)"
       />
     </mat-form-field>
-    <div class="button-container">
-      <button class="small-button" (click)="onRefreshClick()">Refresh</button>
-    </div>
+    
+      <mat-form-field>
+        <mat-label>RecordId</mat-label>
+        <input
+          matInput
+          formControlName="recordId"
+          (change)="onSelectionChange($event)"
+        />
+      </mat-form-field>
+      <div class="button-container">
+        <button class="small-button" (click)="onRefreshClick()">Refresh</button>
+      </div>
   </div>
-  
-  
 </form>
 
 <mat-table class="full-width-table" [dataSource]="dataSource">
@@ -95,7 +96,7 @@
     </td>
   </ng-container>
 
-<!-- recordId Column -->
+  <!-- recordId Column -->
   <ng-container matColumnDef="recordId">
     <th mat-header-cell *matHeaderCellDef fxFlex="6%" class="centered-title">
       recordId

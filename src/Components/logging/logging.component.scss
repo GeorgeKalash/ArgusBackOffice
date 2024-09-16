@@ -3,6 +3,11 @@
     grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
     grid-gap: 10px; /* Adjust the gap between form fields */
   }
+  .form-fields-container2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns as needed */
+    grid-gap: 5px; /* Adjust the gap between form fields */
+  }
 
   .full-width-table {
     box-shadow: none;

@@ -53,9 +53,15 @@ export class LoggingComponent implements OnInit {
       eventType: '',
       userId: '',
       contains: '',
+      recordId: 0,
     });
   }
-
+  setDefaultRecordId() {
+    const recordIdControl = this.form.get('recordId');
+    if (recordIdControl && !recordIdControl.value) {
+      recordIdControl.setValue(0);
+    }
+  }
   formatDate(dateStr: string): string {
     const timestamp = this.extractTimestamp(dateStr);
     const date = new Date(timestamp);
@@ -187,9 +193,8 @@ export class LoggingComponent implements OnInit {
   }
 
   onSelectionChange(event: any) {
+    this.setDefaultRecordId();
     const formValues = this.form.value;
-    console.log(formValues);
-    console.log(formValues.baseUrl);
     if (
       formValues.accountId != '' &&
       formValues.eventType != '' &&
@@ -200,7 +205,7 @@ export class LoggingComponent implements OnInit {
         baseUrl: formValues.baseUrl,
         service: RequestsWebService.service,
         extension: RequestsWebService.qryREQ,
-        parameters: `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_contains=${formValues.contains}&_from=&_to=&
+        parameters: `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_recordId=${formValues.recordId}&_contains=${formValues.contains}&_from=&_to=&
         `,
       };
       this.API_Service.getRequest(request)
