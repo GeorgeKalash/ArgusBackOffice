@@ -50,9 +50,10 @@ export class KeyValueFormComponent {
   ) {
     this.form = this.formBuilder.group({
       dataset: [this.data.dataset],
-      language: ['1'],
       key: ['', Validators.required],
       value: ['', Validators.required],
+      value2: [''],
+      value3: [''],
     });
   }
 
@@ -77,25 +78,57 @@ export class KeyValueFormComponent {
 
   public confirmAdd(): void {
     const formValue = this.form.value;
-    var request = {
-      service: KeyValueStoreWebService.service,
-      extension: KeyValueStoreWebService.setKVS,
-    };
-    this.API_Service.postRequest(request, formValue)
-      .then((data) => {
-        this.dialogRef.close(1);
-        this.notifyService.showSuccess(
-          'Record Saved Successfully',
-          'Success'
-        );
-      })
-      .catch((error) => {
-        this.dialogService.open(AlertDialogComponent, {
-          data: {
-            title: error.status + ' ' + error.name,
-            message: error.error.error,
-          },
+    const objectsList = this.prepareObjects(formValue);
+    objectsList.forEach((element) => {
+      var request = {
+        service: KeyValueStoreWebService.service,
+        extension: KeyValueStoreWebService.setKVS,
+      };
+      this.API_Service.postRequest(request, element)
+        .then((data) => {
+          this.dialogRef.close(1);
+          this.notifyService.showSuccess(
+            'Record Saved Successfully',
+            'Success'
+          );
+        })
+        .catch((error) => {
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: error.status + ' ' + error.name,
+              message: error.error.error,
+            },
+          });
         });
+    });
+  }
+
+  prepareObjects(inputObj: any): any[] {
+    const result = [];
+    if (inputObj.value) {
+      result.push({
+        dataset: inputObj.dataset,
+        language: 1,
+        key: inputObj.key,
+        value: inputObj.value,
       });
+    }
+    if (inputObj.value2) {
+      result.push({
+        dataset: inputObj.dataset,
+        language: 2,
+        key: inputObj.key,
+        value: inputObj.value2,
+      });
+    }
+    if (inputObj.value3) {
+      result.push({
+        dataset: inputObj.dataset,
+        language: 3,
+        key: inputObj.key,
+        value: inputObj.value3,
+      });
+    }
+    return result;
   }
 }

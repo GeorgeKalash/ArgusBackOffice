@@ -12,11 +12,6 @@
             [value]="form.get('dataset')?.value"
           />
           <input
-            type="hidden"
-            formControlName="language"
-            [value]="form.get('language')?.value"
-          />
-          <input
             matInput
             #input
             class="form-control"
@@ -46,6 +41,36 @@
           <mat-error *ngIf="form.controls['value'].hasError('required')">{{
             getErrorMessage()
           }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- value2 Arabic -->
+      <div class="form">
+        <mat-form-field color="primary">
+          <textarea
+            matInput
+            #input
+            class="form-control"
+            placeholder="value (arabic)"
+            formControlName="value2"
+            name="value2"
+            autocomplete="off"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- value 3 French -->
+      <div class="form">
+        <mat-form-field color="primary">
+          <textarea
+            matInput
+            #input
+            class="form-control"
+            placeholder="value (french)"
+            formControlName="value3"
+            name="value3"
+            autocomplete="off"
+          ></textarea>
         </mat-form-field>
       </div>
 
