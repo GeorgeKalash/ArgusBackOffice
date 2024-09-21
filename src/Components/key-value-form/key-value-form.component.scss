@@ -20,15 +20,17 @@
   }
   
   .form-card {
-    width: 300px;
+    width: 500px;
     height: 80%;
   }
   
-  .mat-form-field {
+  div, mat-form-field {
     width: 100%;
     min-width: 400px;
     font-size: 16px;
     flex-grow: 1;
+    margin-left: 10px;
+    margin-right: 10px;
   }
   
   mat-card-title,
