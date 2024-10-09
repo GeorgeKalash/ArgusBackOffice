@@ -28,7 +28,7 @@ export class SignInComponent implements AfterViewInit {
     private renderer: Renderer2
   ) {
     this.form = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required]],
       password: ['', Validators.required],
     });
   }
