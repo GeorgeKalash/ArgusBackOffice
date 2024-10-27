@@ -74,19 +74,47 @@ export class DataSetsFormComponent {
     this.dialogRef.close();
   }
 
-  public confirmAdd(): void {
+  public async confirmAdd(): Promise<void> {
     const formValue = this.form.value;
+
+    var parameters = '_dataset=' + formValue.datasetId;
     var request = {
       service: KeyValueStoreWebService.service,
-      extension: KeyValueStoreWebService.setDataset,
+      extension: KeyValueStoreWebService.getDataset,
+      parameters: parameters,
     };
-    this.API_Service.postRequest(request, formValue)
+
+    this.API_Service.getRequest(request)
       .then((data) => {
-        this.dialogRef.close(1);
-        this.notifyService.showSuccess(
-          'Record Saved Successfully',
-          'Success'
-        );
+        if (data.record) {
+          this.dialogService.open(AlertDialogComponent, {
+            data: {
+              title: 'error',
+              message: 'Duplicate Dataset',
+            },
+          });
+        } else {
+        var request = {
+          service: KeyValueStoreWebService.service,
+          extension: KeyValueStoreWebService.setDataset,
+        };
+        this.API_Service.postRequest(request, formValue)
+          .then((data) => {
+            this.dialogRef.close(1);
+            this.notifyService.showSuccess(
+              'Record Saved Successfully',
+              'Success'
+            );
+          })
+          .catch((error) => {
+            this.dialogService.open(AlertDialogComponent, {
+              data: {
+                title: error.status + ' ' + error.name,
+                message: error.error.error,
+              },
+            });
+          });
+        }
       })
       .catch((error) => {
         this.dialogService.open(AlertDialogComponent, {
@@ -95,6 +123,31 @@ export class DataSetsFormComponent {
             message: error.error.error,
           },
         });
+        return;
+      });    
+  }
+
+  async checkForDuplicateDataset(inputObj: any): Promise<any> {
+    var parameters = '_dataset=' + inputObj.datasetId;
+    var request = {
+      service: KeyValueStoreWebService.service,
+      extension: KeyValueStoreWebService.getDataset,
+      parameters: parameters,
+    };
+
+    
+    this.API_Service.getRequest(request)
+      .then((data) => {
+        return data.record;
+      })
+      .catch((error) => {
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error,
+          },
+        });
+        return false;
       });
   }
 }

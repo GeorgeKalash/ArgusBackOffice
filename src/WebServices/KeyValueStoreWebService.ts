@@ -3,6 +3,7 @@ export const KeyValueStoreWebService = {
 
   //qryKVS(int _dataset, int _language)
   qryKVS: 'qryKVS',
+  getKVS: 'getKVS',
 
   //setKVS()
   setKVS: 'setKVS',
@@ -16,6 +17,7 @@ export const KeyValueStoreWebService = {
 
   //qryDatasets(int _dataset)
   qryDatasets: 'qryDatasets',
+  getDataset: 'getDataset',
 
   //setDataset()
   setDataset: 'setDataset',

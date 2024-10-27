@@ -78,30 +78,60 @@ export class KeyValueFormComponent {
 
   public confirmAdd(): void {
     const formValue = this.form.value;
-    const objectsList = this.prepareObjects(formValue);
-    objectsList.forEach((element) => {
-      var request = {
-        service: KeyValueStoreWebService.service,
-        extension: KeyValueStoreWebService.setKVS,
-      };
-      this.API_Service.postRequest(request, element)
-        .then((data) => {
-          this.dialogRef.close(1);
-          this.notifyService.showSuccess(
-            'Record Saved Successfully',
-            'Success'
-          );
-        })
-        .catch((error) => {
+    //check if the key has already been added
+    var parameters =
+      '_key=' + formValue.key + '&_dataset=' + formValue.dataset + '&_language=1';
+    var request = {
+      service: KeyValueStoreWebService.service,
+      extension: KeyValueStoreWebService.getKVS,
+      parameters: parameters,
+    };
+    this.API_Service.getRequest(request)
+      .then((data) => {
+        if (data.record) {
           this.dialogService.open(AlertDialogComponent, {
             data: {
-              title: error.status + ' ' + error.name,
-              message: error.error.error,
+              title: 'error',
+              message: 'Duplicate Key',
             },
           });
+        } else {
+          const objectsList = this.prepareObjects(formValue);
+          objectsList.forEach((element) => {
+            var request = {
+              service: KeyValueStoreWebService.service,
+              extension: KeyValueStoreWebService.setKVS,
+            };
+            this.API_Service.postRequest(request, element)
+              .then((data) => {
+                this.dialogRef.close(1);
+                this.notifyService.showSuccess(
+                  'Record Saved Successfully',
+                  'Success'
+                );
+              })
+              .catch((error) => {
+                this.dialogService.open(AlertDialogComponent, {
+                  data: {
+                    title: error.status + ' ' + error.name,
+                    message: error.error.error,
+                  },
+                });
+              });
+          });
+        }
+      })
+      .catch((error) => {
+        this.dialogService.open(AlertDialogComponent, {
+          data: {
+            title: error.status + ' ' + error.name,
+            message: error.error.error,
+          },
         });
-    });
+      });
   }
+
+  checkForDuplicateKey(inputObj: any): any {}
 
   prepareObjects(inputObj: any): any[] {
     const result = [];
