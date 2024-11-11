@@ -72,7 +72,7 @@ export class KeyValue1Component implements OnInit {
       .then((data) => {
         if (data != null) {
           if (data.list[0] != null) {
-            this.title = data.list[0].name;
+            this.title = data.list[0].name + " ( "+id+ " )";
           }
         }
       })
