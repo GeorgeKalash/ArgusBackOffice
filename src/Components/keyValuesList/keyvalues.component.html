@@ -1,0 +1,81 @@
+<form [formGroup]="form" style="padding-top: 10px">
+  <div class="form-fields-container">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Search"
+        formControlName="filterValue"
+        (change)="applyFilter()"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>To Language</mat-label>
+      <mat-select
+        formControlName="toLanguageId"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        <mat-option
+          *ngFor="let language of toLanguages"
+          [value]="language.languageId"
+        >
+          {{ language.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+
+<mat-table class="full-width-table" [dataSource]="dataSource">
+  <!-- Dataset Column -->
+  <ng-container matColumnDef="dataset">
+    <th mat-header-cell *matHeaderCellDef fxFlex="15%" class="centered-title">
+      dataset
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="15%" class="custom-cell">
+      {{ element.dataset }}
+    </td>
+  </ng-container>
+  <!-- Key Column -->
+  <ng-container matColumnDef="key">
+    <th mat-header-cell *matHeaderCellDef fxFlex="20%" class="centered-title">
+      key
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="20%" class="custom-cell">
+      {{ element.key }}
+    </td>
+  </ng-container>
+  <!-- Value Column -->
+  <ng-container matColumnDef="value">
+    <th mat-header-cell *matHeaderCellDef fxFlex="65%" class="centered-title">
+      value
+    </th>
+    <td mat-cell *matCellDef="let element" fxFlex="65%" class="custom-cell">
+      <textarea
+        matInput
+        type="text"
+        [(ngModel)]="element.editedValue"
+        #val
+        (blur)="saveRow(element)"
+        class="input-in-cell"
+      >
+      </textarea>
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="displayedColumns"
+    colspan="3"
+    class="custom-row"
+  ></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</mat-table>
+
+<mat-paginator
+  #paginator
+  [length]="dataArray.length"
+  [pageIndex]="0"
+  [pageSize]="50"
+  showFirstLastButtons
+>
+</mat-paginator>

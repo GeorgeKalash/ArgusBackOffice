@@ -6,11 +6,13 @@ import { LoggingComponent } from '../Components/logging/logging.component';
 import { SignInComponent } from '../Components/sign-in/sign-in.component';
 import { KeyValue1Component } from '../Components/key-value1/key-value1.component';
 import { ReportTemplatesComponent } from 'src/Components/report-templates/report-templates.component';
+import { KeyValuesComponent } from 'src/Components/keyValuesList/keyvalues.component';
 
 export const appRoutes: Routes = [
-  { path: 'dataSets', component: DataSetsComponent },
-  { path: 'translators', component: TranslatorsComponent },
   { path: 'logging', component: LoggingComponent },
+  { path: 'dataSets', component: DataSetsComponent },
+  { path: 'keyValues', component: KeyValuesComponent },
+  { path: 'translators', component: TranslatorsComponent },
   { path: 'signin', component: SignInComponent },
   { path: 'kvs/:id', component: KeyValue1Component },
   { path: 'reportTemplates', component: ReportTemplatesComponent },

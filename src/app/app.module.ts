@@ -26,6 +26,7 @@ import { AppComponent } from './app.component';
 import { DataSetsComponent } from '../Components/data-sets/data-sets.component';
 import { TranslatorsComponent } from '../Components/translators/translators.component';
 import { LoggingComponent } from '../Components/logging/logging.component';
+import { KeyValuesComponent } from '../Components/keyValuesList/keyvalues.component';
 import { SignInComponent } from '../Components/sign-in/sign-in.component';
 import { LoaderComponent } from '../Components/loader/loader.component';
 import { AlertDialogComponent } from '../Components/alert-dialog/alert-dialog.component';
@@ -44,6 +45,7 @@ import { ReportTemplatesComponent } from 'src/Components/report-templates/report
     AppComponent,
     TranslatorsComponent,
     LoggingComponent,
+    KeyValuesComponent,
     SignInComponent,
     LoaderComponent,
     AlertDialogComponent,
