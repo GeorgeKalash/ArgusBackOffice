@@ -51,7 +51,7 @@ export class LoggingComponent implements OnInit {
       baseUrl: '',
       accountId: '',
       eventType: '',
-      userId: '',
+      userId: 0,
       contains: '',
       recordId: 0,
     });
@@ -62,6 +62,13 @@ export class LoggingComponent implements OnInit {
       recordIdControl.setValue(0);
     }
   }
+  setDefaultUserId() {
+    const userIdControl = this.form.get('userId');
+    if (userIdControl && !userIdControl.value) {
+      userIdControl.setValue(0);
+    }
+  }
+
   formatDate(dateStr: string): string {
     const timestamp = this.extractTimestamp(dateStr);
     const date = new Date(timestamp);
@@ -194,12 +201,13 @@ export class LoggingComponent implements OnInit {
 
   onSelectionChange(event: any) {
     this.setDefaultRecordId();
+    this.setDefaultUserId();
     const formValues = this.form.value;
     if (
-      formValues.accountId != '' &&
-      formValues.eventType != '' &&
-      formValues.baseUrl != '' &&
-      formValues.userId != ''
+      formValues.accountId !== '' &&
+      formValues.eventType !== '' &&
+      formValues.baseUrl !== '' &&
+      formValues.userId !== ''
     ) {
       var request = {
         baseUrl: formValues.baseUrl,
