@@ -226,6 +226,7 @@ export class LoggingComponent implements OnInit {
             //this.applyFilter();
           }
         })
+        
         .catch((error) => {
           this.dialogService.open(AlertDialogComponent, {
             data: {
