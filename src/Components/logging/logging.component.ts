@@ -52,7 +52,8 @@ export class LoggingComponent implements OnInit {
       accountId: '',
       eventType: '',
       userId: 0,
-      contains: '',
+      url: '',
+      requestBody: '',
       recordId: 0,
     });
   }
@@ -213,8 +214,7 @@ export class LoggingComponent implements OnInit {
         baseUrl: formValues.baseUrl,
         service: RequestsWebService.service,
         extension: RequestsWebService.qryREQ,
-        parameters: `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_recordId=${formValues.recordId}&_contains=${formValues.contains}&_from=&_to=&
-        `,
+        parameters: `_accountId=${formValues.accountId}&_eventType=${formValues.eventType}&_userId=${formValues.userId}&_recordId=${formValues.recordId}&_url=${formValues.url}&_requestBody=${formValues.requestBody}`,
       };
       this.API_Service.getRequest(request)
         .then((data) => {

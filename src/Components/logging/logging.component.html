@@ -54,10 +54,19 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Contains</mat-label>
+      <mat-label>URL</mat-label>
       <input
         matInput
-        formControlName="contains"
+        formControlName="url"
+        (change)="onSelectionChange($event)"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Request Body</mat-label>
+      <input
+        matInput
+        formControlName="requestBody"
         (change)="onSelectionChange($event)"
       />
     </mat-form-field>

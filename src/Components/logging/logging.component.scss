@@ -1,12 +1,12 @@
 .form-fields-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
-    grid-gap: 10px; /* Adjust the gap between form fields */
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 10px; 
   }
   .form-fields-container2 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns as needed */
-    grid-gap: 5px; /* Adjust the gap between form fields */
+    grid-template-columns: repeat(5, 1fr); 
+    grid-gap: 5px; 
   }
 
   .full-width-table {
@@ -16,16 +16,13 @@
     border: 0.5px solid #C7C7C7;
   }
   th {
-    /* row border */
     border-right: 0.5px solid #C7C7C7;
   }
   
   td {
-    /* row padding */
     border-right: 0.5px solid #C7C7C7
   }
   tr {
-    /* row border */
     border-bottom: 0.5px solid #C7C7C7
   }
   
@@ -71,7 +68,7 @@
 }
 .button-container {
   height: 15px;
-  grid-template-columns: repeat(12, 1fr); /* Adjust the number of columns as needed */
+  grid-template-columns: repeat(12, 1fr); 
 }
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
