@@ -1,0 +1,76 @@
+<div class="main-container">
+
+  <div class="actions-button-container">
+    <button mat-icon-button (click)="addReleaseGuide()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+</div>
+
+
+<mat-table class="full-width-table" [dataSource]="dataSource">
+
+  <!-- MODULE -->
+  <ng-container matColumnDef="module">
+    <th mat-header-cell *matHeaderCellDef fxFlex="20%" class="centered-title">
+      Module
+    </th>
+
+    <td mat-cell *matCellDef="let element" fxFlex="20%" class="custom-cell">
+      {{ getModuleName(element.moduleId) }}
+    </td>
+  </ng-container>
+
+
+  <!-- SUBJECT -->
+  <ng-container matColumnDef="subject">
+    <th mat-header-cell *matHeaderCellDef fxFlex="25%" class="centered-title">
+      Subject
+    </th>
+
+    <td mat-cell *matCellDef="let element" fxFlex="25%" class="custom-cell">
+      {{ element.subject }}
+    </td>
+  </ng-container>
+
+
+  <!-- GUIDE -->
+  <ng-container matColumnDef="guide">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40%" class="centered-title">
+      Guide
+    </th>
+
+    <td mat-cell *matCellDef="let element" fxFlex="40%" class="custom-cell">
+      <div class="guide-text">{{ element.guide }}</div>
+    </td>
+  </ng-container>
+
+
+  <!-- ACTIONS -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef fxFlex="15%" class="centered-title"></th>
+
+    <td mat-cell *matCellDef="let element" fxFlex="15%">
+      <button mat-icon-button (click)="editReleaseGuide(element)">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button (click)="deleteItem($event, element)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="custom-row"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+</mat-table>
+
+
+<mat-paginator
+  #paginator
+  [pageSize]="50"
+  showFirstLastButtons
+></mat-paginator>

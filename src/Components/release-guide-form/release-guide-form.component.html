@@ -1,0 +1,144 @@
+<div class="form-card">
+
+  <mat-card-title
+    style="height: 50px; font-size: 20px; font-style: bold;"
+  >
+    {{ data.mode === 'edit'
+      ? 'Edit Release Guide'
+      : 'Add Release Guide' }}
+  </mat-card-title>
+
+
+  <mat-card-content>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+    >
+
+<!-- Module -->
+<div class="form">
+
+  <mat-form-field color="primary">
+
+    <mat-label>Module</mat-label>
+
+    <input
+      type="text"
+      matInput
+      [formControl]="module"
+      [matAutocomplete]="moduleAuto"
+      required
+      autocomplete="off"
+    />
+
+    <mat-autocomplete
+      #moduleAuto="matAutocomplete"
+      panelClass="release-guide-autocomplete-panel"
+      (optionSelected)="onModuleSelected($event)"
+    >
+
+      <mat-option
+        *ngFor="let module of filteredModules"
+        [value]="module.key"
+      >
+        {{ module.value }}
+      </mat-option>
+
+    </mat-autocomplete>
+
+    <mat-error
+      *ngIf="form.controls['moduleId'].hasError('required')"
+    >
+      {{ getErrorMessage('moduleId') }}
+    </mat-error>
+
+  </mat-form-field>
+
+</div>
+
+
+      <!-- Subject -->
+      <div class="form">
+
+        <mat-form-field color="primary">
+
+          <mat-label>Subject</mat-label>
+
+          <input
+            matInput
+            formControlName="subject"
+            name="subject"
+            required
+            autocomplete="off"
+          />
+
+          <mat-error
+            *ngIf="form.controls['subject'].hasError('required')"
+          >
+            {{ getErrorMessage('subject') }}
+          </mat-error>
+
+        </mat-form-field>
+
+      </div>
+
+
+      <!-- Guide -->
+      <div class="form">
+
+        <mat-form-field
+          color="primary"
+          class="notes-field"
+        >
+
+          <mat-label>Guide</mat-label>
+
+          <textarea
+            matInput
+            formControlName="guide"
+            name="guide"
+            rows="6"
+            required
+          ></textarea>
+
+          <mat-error
+            *ngIf="form.controls['guide'].hasError('required')"
+          >
+            {{ getErrorMessage('guide') }}
+          </mat-error>
+
+        </mat-form-field>
+
+      </div>
+
+
+      <!-- Buttons -->
+      <div mat-dialog-actions>
+
+        <button
+          mat-button
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          {{ data.mode === 'edit'
+            ? 'Update'
+            : 'Save' }}
+        </button>
+
+        <button
+          mat-button
+          type="button"
+          (click)="onNoClick()"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </mat-card-content>
+
+</div>

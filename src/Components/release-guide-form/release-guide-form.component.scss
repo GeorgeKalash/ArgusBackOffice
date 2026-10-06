@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    min-width: 450px;
+  }
+
+  .container > * {
+    width: 100%;
+  }
+  
+  .form {
+    display: flex;
+    padding-top: 6px;
+  }
+  
+  :host {
+    display: flex;
+    justify-content: center;
+    margin: 35px 0px;
+  }
+  
+  .form-card {
+    width: 500px;
+    height: 80%;
+  }
+  
+  div, mat-form-field {
+    width: 100%;
+    min-width: 400px;
+    font-size: 16px;
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  mat-card-title,
+  mat-card-content {
+    display: flex;
+    justify-content: center;
+  }
+  .error {
+    padding: 16px;
+    width: 300px;
+    color: white;
+    background-color: red;
+  }
+  
+  .button {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+
+.release-guide-autocomplete-panel {
+  z-index: 9999 !important;
+}
