@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-
+import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { FormsModule } from '@angular/forms';
 import { KVS_Service } from 'src/KVS_service';
 import { KeyValueStoreWebService } from 'src/WebServices/KeyValueStoreWebService';
 
@@ -26,10 +27,12 @@ import { NotificationService } from 'src/Services/notification.service';
   imports: [
     MatTableModule,
     MatPaginatorModule,
-    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FlexLayoutModule,
     MatIconModule,
-    MatDialogModule,
-    FlexLayoutModule
+    MatButtonModule,
+    FormsModule,
   ]
 })
 export class ReleaseGuideComponent implements OnInit {
@@ -44,14 +47,14 @@ export class ReleaseGuideComponent implements OnInit {
     'module',
     'subject',
     'guide',
-    'actions'
+    'edit',
+    'delete'
   ];
 
   modules: any[] = [];
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('inputRef') inputRef!: ElementRef<HTMLInputElement>;
 
   constructor(
     private route: ActivatedRoute,
@@ -129,11 +132,9 @@ export class ReleaseGuideComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(async (result: ReleaseGuide | undefined) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
 
-      if (!result) return;  
-
-      this.fetchReleaseGuides();
+      if (result === 1) this.fetchReleaseGuides();
     });
   }
 
@@ -157,11 +158,21 @@ export class ReleaseGuideComponent implements OnInit {
           );
 
           this.dataSource.paginator = this.paginator;
+          const inputValue = this.inputRef.nativeElement.value;
+          this.applyFilter(inputValue);
         }
       })
       .catch((error) => {
         console.error('Error loading release guides', error);
       });
+  }
+
+  applyFilter(filterValue: string) {
+    if (filterValue) {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    } else {
+      this.dataSource.filter = '';
+    }
   }
 
   public deleteRow(element: any): void {

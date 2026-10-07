@@ -1,58 +1,60 @@
 .no-shadow{
-    box-shadow: none;
-  }
-  
-  .full-width-table {
-    box-shadow: none;
-    width: 90%;
-    border-collapse: collapse;
-    border: 0.5px solid #C7C7C7;
-    top: 15px;
-  }
-  
-  table {
-    width: 100%;
-  }
-  
-  th {
-    /* row border */
-    border-right: 0.5px solid #C7C7C7;
-  }
-  
-  td {
-    /* row padding */
-    border-right: 0.5px solid #C7C7C7
-  }
-  tr {
-    /* row border */
-    border-bottom: 0.5px solid #C7C7C7
-  }
-  .centered-title{
+  box-shadow: none;
+}
+
+.full-width-table {
+  box-shadow: none;
+  width: 90%;
+  border-collapse: collapse;
+  border: 0.5px solid #C7C7C7;
+  top: 15px;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  /* row border */
+  border-right: 0.5px solid #C7C7C7;
+}
+
+td {
+  /* row padding */
+  border-right: 0.5px solid #C7C7C7
+}
+tr {
+  /* row border */
+  border-bottom: 0.5px solid #C7C7C7
+}
+.centered-title{
+display: flex;
+align-items: center;
+justify-content: center;
+height: 100%;
+}
+
+.custom-cell {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  }
-  
-  .custom-cell {
-    display: flex;
-    align-items: center;
-  }
-  .custom-row {
-    display: flex;
-    align-items: center;
-  }
+}
+.custom-row {
+  display: flex;
+  align-items: center;
+}
 
-  .main-container {
-    display: flex;
-    align-items: center; /* Optional: To vertically align the content */
-  }
-  
-  .actions-button-container,
+.main-container {
+  display: flex;
+  align-items: center; /* Optional: To vertically align the content */
+}
+
+.actions-button-container,
   .form-fields-container {
     margin-right: 10px; /* Optional: To add some space between the two elements */
-
+    margin-top: 15px;
   }
+
+
 
   .input-in-cell {
     width: 100%;
@@ -67,16 +69,3 @@
     font-size: 14px;
     color: #000000DE;
   }
-
-  .page-title{
-    text-align: center; /* Center the content inside the main-container div */
-    margin-top: 15px;
-  }
-
-  .guide-text {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  white-space: pre-wrap;
-}
