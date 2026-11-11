@@ -3,6 +3,22 @@
     <button mat-icon-button (click)="addReleaseGuide()">
       <mat-icon>add</mat-icon>
     </button>
+    <button
+      mat-icon-button
+      (click)="csvInput.click()"
+      matTooltip="Import CSV"
+    >
+      <mat-icon>upload_file</mat-icon>
+    </button>
+
+    <input
+      #csvInput
+      type="file"
+      accept=".csv,text/csv"
+      hidden
+      (change)="importCsv($event)"
+    />
+
   </div>
 
   <div class="form-fields-container">

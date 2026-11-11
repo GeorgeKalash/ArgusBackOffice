@@ -18,6 +18,7 @@ import { ReleaseGuideFormComponent } from '../release-guide-form/release-guide-f
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { NotificationService } from 'src/Services/notification.service';
+import * as Papa from 'papaparse';
 
 @Component({
   selector: 'app-release-guide',
@@ -92,6 +93,103 @@ export class ReleaseGuideComponent implements OnInit {
       });
   }
 
+  importCsv(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!this.release) {
+      this.notifyService.showError('Release is not defined in the URL', 'Error');
+      input.value = '';
+      return;
+    }
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      transformHeader: (header) =>
+        header.replace(/^\uFEFF/, '').trim().toLowerCase(),
+
+      complete: (result) => {
+        const requiredColumns = ['moduleref', 'subject', 'guide'];
+        const headers = result.meta.fields || [];
+
+        const missingColumns = requiredColumns.filter(
+          column => !headers.includes(column)
+        );
+
+        if (missingColumns.length > 0) {
+          alert(`Missing CSV columns: ${missingColumns.join(', ')}`);
+          input.value = '';
+          return;
+        }
+
+        const rows = (result.data as any[]).map((row, index) => ({
+          rowNumber: index + 2,
+          moduleRef: row.moduleref?.trim(),
+          subject: row.subject?.trim(),
+          guide: row.guide?.trim()
+        }));
+
+        const invalidRows = rows.filter(
+          item => !item.moduleRef || !item.subject || !item.guide
+        );
+
+        if (invalidRows.length > 0) {
+          alert(`Invalid rows (missing values): ${invalidRows.map(x => x.rowNumber).join(', ')}`);
+          input.value = '';
+          return;
+        }
+
+        if (rows.length === 0) {
+          alert('The CSV file contains no data rows.');
+          input.value = '';
+          return;
+        }
+
+        const body = {
+          release: this.release,
+          items: rows.map(({ rowNumber, ...item }) => item)
+        };
+
+        const request = {
+          service: KeyValueStoreWebService.service,
+          extension: KeyValueStoreWebService.batchReleaseGuide
+        };
+
+        this.API_Service.postRequest(request, body)
+          .then((data) => {
+            if (data != null) {
+              this.notifyService.showSuccess(
+                `${body.items.length} release guides imported successfully`,
+                'Success'
+              );
+              this.fetchReleaseGuides();
+            }
+          })
+          .catch((error) => {
+            this.dialogService.open(AlertDialogComponent, {
+              data: {
+                title: error.status + ' ' + error.name,
+                message: error.error?.error || 'Import failed',
+              },
+            });
+          })
+          .finally(() => {
+            input.value = '';
+          });
+      },
+
+      error: (error) => {
+        console.error('CSV parsing error:', error);
+        alert('Error reading CSV file.');
+        input.value = '';
+      }
+    });
+  }
 
   getModuleName(moduleId: number): string {
 

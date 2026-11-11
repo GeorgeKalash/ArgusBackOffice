@@ -204,13 +204,9 @@ export class KeyValue1Component implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        // Handle the "YES" action
-        console.log('User clicked YES');
         this.deleteRow(element);
         // Perform your action here
       } else {
-        // Handle the "NO" action or dialog closure
-        console.log('User clicked NO or closed the dialog');
       }
     });
   }

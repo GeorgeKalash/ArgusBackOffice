@@ -31,6 +31,7 @@ export const KeyValueStoreWebService = {
   getReleaseGuide: 'getReleaseGuide',
   setReleaseGuide: 'setReleaseGuide',
   delReleaseGuide: 'delReleaseGuide',
+  batchReleaseGuide: 'batchReleaseGuide',
 
   qryAttachment: 'qryAttachment',
   setAttachment: 'setAttachment',

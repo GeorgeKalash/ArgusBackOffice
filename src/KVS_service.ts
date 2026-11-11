@@ -26,10 +26,6 @@ export class KVS_Service {
   async getRequest(body: any): Promise<any> {
     try {
       const baseUrl = body.baseUrl ?? this.URL;
-      console.log('body.baseUrl')
-      console.log(body.baseUrl)
-      console.log('baseUrl')
-      console.log(baseUrl)
       this.loaderService.showLoader();
       const url =
         baseUrl + body.service + body.extension + '?' + body.parameters;
